@@ -1,0 +1,1 @@
+/usr/bin/c++   -g   CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o  -o algo3_tp2_rutas 
