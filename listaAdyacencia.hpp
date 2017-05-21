@@ -4,7 +4,8 @@
 
 using namespace std;
 
-class listaAdyacencia<T>{
+template<typename T>
+class listaAdyacencia{
 
 private:
 
@@ -14,12 +15,12 @@ private:
 public:
 
 	listaAdyacencia(unsigned cantNodos, bool indexadoEnCero):
-		 _nodos(cantNodos, list<T>())
+		 _nodos(cantNodos, list<T>()),
 		 _indexadoEnCero(indexadoEnCero){
 
 	}
 
-	void agregarAdyacente(unsigned nodo, T dato){
+	void agregarVecino(unsigned nodo, T dato){
 		unsigned numNodo = nodo - _indexadoEnCero*1;
 		_nodos[numNodo].push_back(dato);
 	}
@@ -28,4 +29,4 @@ public:
 		unsigned numNodo = nodo - _indexadoEnCero*1;
 		return _nodos[numNodo];
 	}
-}
+};
