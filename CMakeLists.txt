@@ -3,5 +3,5 @@ project(algo3_tp2_rutas)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp DisjointSet.cpp DisjointSet.h)
 add_executable(algo3_tp2_rutas ${SOURCE_FILES})

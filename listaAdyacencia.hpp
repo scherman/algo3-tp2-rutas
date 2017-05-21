@@ -17,7 +17,6 @@ public:
 	listaAdyacencia(unsigned cantNodos, bool indexadoEnCero):
 		 _nodos(cantNodos, list<T>()),
 		 _indexadoEnCero(indexadoEnCero){
-
 	}
 
 	void agregarVecino(unsigned nodo, T dato){
