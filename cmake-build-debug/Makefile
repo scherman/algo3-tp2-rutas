@@ -150,6 +150,33 @@ DisjointSet.cpp.s:
 	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.s
 .PHONY : DisjointSet.cpp.s
 
+GrafoListaIncidencias.o: GrafoListaIncidencias.cpp.o
+
+.PHONY : GrafoListaIncidencias.o
+
+# target to build an object file
+GrafoListaIncidencias.cpp.o:
+	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o
+.PHONY : GrafoListaIncidencias.cpp.o
+
+GrafoListaIncidencias.i: GrafoListaIncidencias.cpp.i
+
+.PHONY : GrafoListaIncidencias.i
+
+# target to preprocess a source file
+GrafoListaIncidencias.cpp.i:
+	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.i
+.PHONY : GrafoListaIncidencias.cpp.i
+
+GrafoListaIncidencias.s: GrafoListaIncidencias.cpp.s
+
+.PHONY : GrafoListaIncidencias.s
+
+# target to generate assembly for a file
+GrafoListaIncidencias.cpp.s:
+	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.s
+.PHONY : GrafoListaIncidencias.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -189,6 +216,9 @@ help:
 	@echo "... DisjointSet.o"
 	@echo "... DisjointSet.i"
 	@echo "... DisjointSet.s"
+	@echo "... GrafoListaIncidencias.o"
+	@echo "... GrafoListaIncidencias.i"
+	@echo "... GrafoListaIncidencias.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

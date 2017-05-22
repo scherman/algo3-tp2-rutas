@@ -90,6 +90,12 @@
 		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h">
 			<Option target="algo3_tp2_rutas"/>
 		</Unit>
+		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.cpp">
+			<Option target="algo3_tp2_rutas"/>
+		</Unit>
+		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h">
+			<Option target="algo3_tp2_rutas"/>
+		</Unit>
 		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp">
 			<Option target="algo3_tp2_rutas"/>
 		</Unit>

@@ -4,6 +4,11 @@
 CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o: ../DisjointSet.cpp
 CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o: ../DisjointSet.h
 
+CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o: ../DisjointSet.h
+CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o: ../GrafoListaIncidencias.cpp
+CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o: ../GrafoListaIncidencias.h
+
 CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o: ../DisjointSet.h
+CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o: ../GrafoListaIncidencias.h
 CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o: ../main.cpp
 

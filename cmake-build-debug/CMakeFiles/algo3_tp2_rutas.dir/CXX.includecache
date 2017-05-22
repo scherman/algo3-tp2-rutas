@@ -12,9 +12,25 @@ DisjointSet.h
 
 /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
 
+/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.cpp
+iostream
+-
+GrafoListaIncidencias.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
+DisjointSet.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+
+/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
+list
+-
+stdlib.h
+-
+
 /home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp
 iostream
 -
 DisjointSet.h
 /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+GrafoListaIncidencias.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
 

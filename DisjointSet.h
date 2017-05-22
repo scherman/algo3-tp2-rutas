@@ -14,7 +14,11 @@ public:
         subsets = new Subset[n];
 
         // Initialize trivials sets
-        for (int i = 0; i < 3; ++i) makeSet(i);
+        for (int i = 0; i < n; ++i) makeSet(i);
+    }
+
+    ~DisjointSet() {
+        delete subsets;
     }
 
     // Initialize set
@@ -25,9 +29,6 @@ public:
 
     // A function that does union of two sets of x and y (uses union by rank)
     void unify(int x, int y);
-
-    bool generatesCycle(int x, int y);
-
 
 private:
 

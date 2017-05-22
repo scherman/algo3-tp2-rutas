@@ -33,10 +33,3 @@ void DisjointSet::unify(int x, int y)
         subsets[xroot].rank++;
     }
 }
-
-bool DisjointSet::generatesCycle(int x, int y) {
-    int xParent = find(x);
-    int yParent = find(y);
-
-    return xParent == yParent;
-}

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DisjointSet.h"
+#include "GrafoListaIncidencias.h"
 
 /*
  * Ejercicio 1
@@ -49,5 +50,14 @@ int reconstruirRutas();
 
 
 int main() {
+    GrafoListaIncidencias grafo(4);
+    grafo.agregarEje(0, 1, 10);
+    grafo.agregarEje(0, 2, 6);
+    grafo.agregarEje(0, 3, 5);
+    grafo.agregarEje(1, 3, 15);
+    grafo.agregarEje(2, 3, 4);
+
+    std::cout << "Grafo: " << grafo << std::endl;
+    std::cout << "AGM de grafo: " << grafo.kruskal() << std::endl;
     return 0;
 }
