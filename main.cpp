@@ -1,4 +1,5 @@
 #include <iostream>
+#include "DisjointSet.h"
 
 /*
  * Ejercicio 1

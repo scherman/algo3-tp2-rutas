@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp" "/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o"
   "/home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp" "/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

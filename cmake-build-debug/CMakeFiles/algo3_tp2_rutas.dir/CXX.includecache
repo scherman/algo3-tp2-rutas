@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp
+DisjointSet.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+
+/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+
+/home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp
+iostream
+-
+DisjointSet.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+

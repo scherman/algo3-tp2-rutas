@@ -26,7 +26,6 @@ public:
 	listaAdyacencia(unsigned cantNodos, bool indexadoEnUno):
 		 _nodos(cantNodos, list<T>()),
 		 _indexadoEnUno(indexadoEnUno){
-
 	}
 
 	/*

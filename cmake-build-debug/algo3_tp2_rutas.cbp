@@ -84,6 +84,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp">
+			<Option target="algo3_tp2_rutas"/>
+		</Unit>
+		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h">
+			<Option target="algo3_tp2_rutas"/>
+		</Unit>
 		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp">
 			<Option target="algo3_tp2_rutas"/>
 		</Unit>
