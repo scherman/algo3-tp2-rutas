@@ -23,7 +23,7 @@ inline unsigned idNodo(nodo n, unsigned k){
 
 
 //Cola de prioridad para el algo de dijkstra.
-//Matiene exactamente cantElementos elementos, todos inicializados con prioridad infinita. 
+//Matiene hasta cantElementos elementos y a partir de ahí decrece. Todos los elementos son inicializados con prioridad infinita. 
 class colaPrioArray{
 
 private:
@@ -31,10 +31,9 @@ private:
 	vector<int> _elementos;
 	vector<bool> _extraido;
 	unsigned _cantExtraidos;
-public:
 	const int _INF_;
 
-	//colaPrioArray(): _INF_(-1){}
+public:
 
 	colaPrioArray(unsigned cantElementos):
 		_elementos(cantElementos),
@@ -87,24 +86,17 @@ int dist_camino_minimo_dijkstra(nodo n1, nodo n2, listaAdyacencia<vecino> grafo,
 	unsigned destino = idNodo(n2, k);
 	distancia[origen] = 0;
 	cola.actualizarPrio(origen, 0);
-	//cout << "distancia: [";
-	//for(auto v : distancia) cout << v << ", ";
-	//cout << "]" << endl;
+	
 	while(!cola.empty()){
 		unsigned p = cola.extraerMin();
-		//cout << "utilizando (" << (int)(p/(k+1)) << ", " << p % (k+1) << ") como p (" << grafo.vecinos(p).size() << " vecinos) (p = " << p << ")" << endl;
 		for(vecino v : grafo.vecinos(p)){
 			unsigned q = idNodo(v.first, k);
-			//cout << "utilizando (" << (int)(q/(k+1)) << ", " << q % (k+1) << ") como q (q = " << q << ")" << endl;
 			unsigned costo = v.second;
 			if(distancia[q] == _INF_ || distancia[q] > distancia[p] + costo){
 				distancia[q] = distancia[p] + costo;
 			}
 			cola.actualizarPrio(q, distancia[q]);
 		}
-		//cout << "distancia: [";
-		//for(auto v : distancia) cout << v << ", ";
-		//cout << "]" << endl;
 	}
 
 	return distancia[destino];
@@ -197,7 +189,6 @@ int main(int argc, char** argv){
 		cout << resolver(grafo, n, origen - 1, destino - 1, k) << endl; //En el grafo las ciudades se indexaron en el rango [0, n)
 		delete[] grafo;
 	}	
-	//TODO: leer varias instancias (recordar que están separadas por "-1 -1")
 	input.close();
 	return 0;
 
