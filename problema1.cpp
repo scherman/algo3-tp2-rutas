@@ -17,7 +17,7 @@ typedef pair <nodo, int> vecino;
 
 
 inline unsigned idNodo(nodo n, unsigned k){
-	unsigned p = (k != 0) ? k : 1;
+	unsigned p = (k != 0) ? (k+1) : 1;
 	return (n.first*p + n.second);
 }
 
@@ -87,17 +87,24 @@ int dist_camino_minimo_dijkstra(nodo n1, nodo n2, listaAdyacencia<vecino> grafo,
 	unsigned destino = idNodo(n2, k);
 	distancia[origen] = 0;
 	cola.actualizarPrio(origen, 0);
-
+	//cout << "distancia: [";
+	//for(auto v : distancia) cout << v << ", ";
+	//cout << "]" << endl;
 	while(!cola.empty()){
 		unsigned p = cola.extraerMin();
+		//cout << "utilizando (" << (int)(p/(k+1)) << ", " << p % (k+1) << ") como p (" << grafo.vecinos(p).size() << " vecinos) (p = " << p << ")" << endl;
 		for(vecino v : grafo.vecinos(p)){
 			unsigned q = idNodo(v.first, k);
+			//cout << "utilizando (" << (int)(q/(k+1)) << ", " << q % (k+1) << ") como q (q = " << q << ")" << endl;
 			unsigned costo = v.second;
 			if(distancia[q] == _INF_ || distancia[q] > distancia[p] + costo){
 				distancia[q] = distancia[p] + costo;
 			}
 			cola.actualizarPrio(q, distancia[q]);
 		}
+		//cout << "distancia: [";
+		//for(auto v : distancia) cout << v << ", ";
+		//cout << "]" << endl;
 	}
 
 	return distancia[destino];
@@ -137,7 +144,6 @@ int resolver(int* grafoOriginal, unsigned n, unsigned origen, unsigned destino, 
 			}
 		}
 	}
-
 	
 	//El nodo (origen, 0)  se corresponde con la ciudad de origen, sin haber usando ninguna ruta premium
 	//El nodo (destino, k) se corresponde con la ciudad de destino, habiendo usado a lo sumo k rutas premium.
