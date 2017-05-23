@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o"
   "CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o"
   "CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o"
+  "CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.o"
   "algo3_tp2_rutas.pdb"
   "algo3_tp2_rutas"
 )

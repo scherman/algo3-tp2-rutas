@@ -4,11 +4,19 @@
 CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o
  /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp
  /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+ /home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
 CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o
  /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+ /home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
  /home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.cpp
  /home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
 CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o
  /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+ /home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
  /home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
  /home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp
+CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.o
+ /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+ /home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
+ /home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
+ /home/jscherman/CLionProjects/algo3-tp2-rutas/problema3.cpp

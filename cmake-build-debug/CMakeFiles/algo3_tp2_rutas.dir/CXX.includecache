@@ -7,27 +7,51 @@
 #IncludeRegexTransform: 
 
 /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp
+iostream
+-
 DisjointSet.h
 /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
 
 /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+Eje.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
+list
+-
+iostream
+-
+
+/home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
+ostream
+-
 
 /home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.cpp
-iostream
+GrafoListaIncidencias.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
+
+/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
+list
 -
 GrafoListaIncidencias.h
 /home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
 DisjointSet.h
 /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
-
-/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
-list
+ostream
 -
-stdlib.h
--
+Eje.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
 
 /home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp
 iostream
+-
+DisjointSet.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
+GrafoListaIncidencias.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
+
+/home/jscherman/CLionProjects/algo3-tp2-rutas/problema3.cpp
+utility
+-
+vector
 -
 DisjointSet.h
 /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h

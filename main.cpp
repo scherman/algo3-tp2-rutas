@@ -32,22 +32,6 @@ int calcularCaminoMinimo();
  */
 int maximoSubsidio();
 
-/*
- * Ejercicio 3
- * >> Grafo simple
- * >>    V := Ciudades
- * >>    E := Rutas
- * >>    p(c1,c2) = Precio de destrucción (si existe) o construcción (si no) de la ruta que une a las ciudades c1 y c2.
- * >> Grafo no necesariamente conexo
- * Input:   n
- *          c1 c2 existe? precioConstruccionODestruccion  (n(n-1)/2 veces)
- *          ...
- *          -1
- * Output:  precioTotal cantRutasFinales c11 c12 c21 c22 ... cr1 cr2
- */
-int reconstruirRutas();
-
-
 
 int main() {
     GrafoListaIncidencias grafo(4);
@@ -58,6 +42,6 @@ int main() {
     grafo.agregarEje(2, 3, 4);
 
     std::cout << "Grafo: " << grafo << std::endl;
-    std::cout << "AGM de grafo: " << grafo.kruskal() << std::endl;
+    std::cout << "AGM de grafo: " << grafo.AGMin() << std::endl;
     return 0;
 }

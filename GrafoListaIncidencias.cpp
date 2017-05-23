@@ -2,13 +2,9 @@
 // Created by jscherman on 21/05/17.
 //
 
-#include <iostream>
 #include "GrafoListaIncidencias.h"
-#include "DisjointSet.h"
 
-bool sortByName(const GrafoListaIncidencias::Eje &x, const GrafoListaIncidencias::Eje &y) { return x.peso < y.peso; }
-
-GrafoListaIncidencias GrafoListaIncidencias::kruskal() {
+GrafoListaIncidencias GrafoListaIncidencias::AGMin() {
     // Creo uds trivial (1 set x nodo)
     DisjointSet uds(_cantNodos);
 
@@ -16,18 +12,18 @@ GrafoListaIncidencias GrafoListaIncidencias::kruskal() {
     _ejes->sort();
 
     GrafoListaIncidencias agm(_cantNodos);
-    std::list<GrafoListaIncidencias::Eje>::iterator itEjes= _ejes->begin();
+    std::list<Eje>::iterator itEjes= _ejes->begin();
     for (int i = 0; i < _cantNodos; ++i) {
-        GrafoListaIncidencias::Eje e = *itEjes;
+        Eje e = *itEjes;
 
         // Obtengo representantes de origen y destino
-        int repOrigen = uds.find(e.origen);
-        int repDestino = uds.find(e.destino);
+        DisjointSet::Subset *setOrigen = uds.find(e.origen);
+        DisjointSet::Subset *setDestino = uds.find(e.destino);
 
         // Si no genera ciclos, la agrego
-        if (repOrigen != repDestino) {
+        if (setOrigen != setDestino) {
             agm.agregarEje(e.origen, e.destino, e.peso);
-            uds.unify(repOrigen, repDestino);
+            uds.unify(e);
         }
         itEjes++;
     }
