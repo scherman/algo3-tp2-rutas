@@ -14,11 +14,11 @@ public:
 
 	}
 
-	stringTokenizer(const string& str, char delimiter){
+	stringTokenizer(const string& str, string::value_type delimiter){
 		tokenize(str, delimiter);
 	}
 
-	void tokenize(const string& str, char delimiter){
+	void tokenize(const string& str, string::value_type delimiter){
 
 		tokens.clear();
 
