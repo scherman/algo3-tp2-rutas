@@ -1,6 +1,9 @@
 //
-// Created by jscherman on 22/05/17.
+// Created by jscherman on 23/05/17.
 //
+
+#ifndef ALGO3_TP2_RUTAS_PROBLEMA3_H
+#define ALGO3_TP2_RUTAS_PROBLEMA3_H
 
 #include <utility>
 #include <vector>
@@ -21,11 +24,11 @@
  * Output:  precioTotal cantRutasFinales c11 c12 c21 c22 ... cr1 cr2
  */
 
-int reconstruirRutas(int n, std::vector<std::pair<Eje, bool>> rutas){
+int reconstruirRutas(int n, std::list<std::pair<Eje, bool>> rutas){
     std::list<Eje> rutasNoExistentes;
-    
+
     DisjointSet uds(n);
-    for (std::vector<std::pair<Eje, bool>>::iterator it = rutas.begin(); it != rutas.end(); ++it) {
+    for (std::list<std::pair<Eje, bool>>::iterator it = rutas.begin(); it != rutas.end(); ++it) {
         std::pair<Eje, bool> ruta = *it;
         if (ruta.second) { // Existe ruta?
             uds.unify(ruta.first);
@@ -35,10 +38,17 @@ int reconstruirRutas(int n, std::vector<std::pair<Eje, bool>> rutas){
     }
 
     std::list<DisjointSet::Subset*> componentesConexas = uds.disjointSets();
+    for (std::list<DisjointSet::Subset*>::const_iterator it = componentesConexas.begin(); it != componentesConexas.end() ; ++it) {
+        std::cout << "Componente conexa: " << **it << std::endl;
+    }
+
     for (std::list<DisjointSet::Subset*>::iterator it = componentesConexas.begin(); it != componentesConexas.end(); ++it) {
         DisjointSet::Subset* componenteConexa = *it;
         GrafoListaIncidencias grafo (componenteConexa->size, componenteConexa->edges);
-//        grafo.AGMax().ejes();
+        std::pair<GrafoListaIncidencias, int> reconfiguracionEnComponenteConexa = grafo.AGMax();
+        std::cout << "Precio " << reconfiguracionEnComponenteConexa.second << " | Componente conexa actual: " << reconfiguracionEnComponenteConexa.first << std::endl;
     }
 
 }
+
+#endif //ALGO3_TP2_RUTAS_PROBLEMA3_H

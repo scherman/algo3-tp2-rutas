@@ -3,5 +3,5 @@ project(algo3_tp2_rutas)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp DisjointSet.cpp DisjointSet.h GrafoListaIncidencias.cpp GrafoListaIncidencias.h problema3.cpp Eje.h)
+set(SOURCE_FILES main.cpp DisjointSet.cpp DisjointSet.h GrafoListaIncidencias.cpp GrafoListaIncidencias.h Eje.h problema3.h)
 add_executable(algo3_tp2_rutas ${SOURCE_FILES})

@@ -204,33 +204,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-problema3.o: problema3.cpp.o
-
-.PHONY : problema3.o
-
-# target to build an object file
-problema3.cpp.o:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.o
-.PHONY : problema3.cpp.o
-
-problema3.i: problema3.cpp.i
-
-.PHONY : problema3.i
-
-# target to preprocess a source file
-problema3.cpp.i:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.i
-.PHONY : problema3.cpp.i
-
-problema3.s: problema3.cpp.s
-
-.PHONY : problema3.s
-
-# target to generate assembly for a file
-problema3.cpp.s:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.s
-.PHONY : problema3.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -249,9 +222,6 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... problema3.o"
-	@echo "... problema3.i"
-	@echo "... problema3.s"
 .PHONY : help
 
 

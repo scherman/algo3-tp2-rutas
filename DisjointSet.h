@@ -9,6 +9,7 @@
 #include "Eje.h"
 #include <list>
 #include <iostream>
+#include <string>
 
 class DisjointSet {
 
@@ -21,15 +22,16 @@ public:
         std::list<Eje> edges;
         int size;
 
-        void mergeSubset(Subset *subset) {
-            subset->parent = parent;
-            edges.splice(edges.begin(), subset->edges);
-            size += subset->size;
-            if (rank = subset->rank) rank++;
-        }
-
         bool operator==(const Subset& other) {
             return parent = other.parent;
+        }
+
+        friend std::ostream & operator<<(std::ostream & os, const Subset& s) {
+            os << "Rank " << s.rank << " | Size: " << s.size << " | Parent: " << s.parent << " | Edges: ";
+            for (std::list<Eje>::const_iterator it = s.edges.begin(); it != s.edges.end() ; ++it) {
+                os << *it << " ";
+            }
+            return os;
         }
     };
 
@@ -52,14 +54,23 @@ public:
     void makeSet(int i);
 
     // A utility function to find set of an element i (uses path compression technique)
-    Subset* find(int i);
+    Subset* find(int i) const;
 
     // A function that does union of two sets of x and y (uses union by rank)
     void unify(const Eje &e);
 
-    std::list<Subset*> disjointSets();
+    std::list<Subset*> disjointSets() const;
 
     Subset & mergeAllSets();
+
+    friend std::ostream& operator<<(std::ostream& os, const DisjointSet& d) {
+        std::list<Subset*> sets = d.disjointSets();
+        os << "Disjoint set | " << std::to_string(sets.size())  << " sets: " << std::endl;
+        for (std::list<Subset*>::const_iterator it = sets.begin(); it != sets.end() ; ++it) {
+            os << "--> " << **it << std::endl;
+        }
+        return os;
+    }
 
 private:
 

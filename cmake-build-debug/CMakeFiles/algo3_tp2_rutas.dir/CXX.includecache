@@ -19,6 +19,8 @@ list
 -
 iostream
 -
+string
+-
 
 /home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
 ostream
@@ -41,14 +43,10 @@ Eje.h
 /home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
 
 /home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp
-iostream
--
-DisjointSet.h
-/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
-GrafoListaIncidencias.h
-/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
+problema3.h
+/home/jscherman/CLionProjects/algo3-tp2-rutas/problema3.h
 
-/home/jscherman/CLionProjects/algo3-tp2-rutas/problema3.cpp
+/home/jscherman/CLionProjects/algo3-tp2-rutas/problema3.h
 utility
 -
 vector

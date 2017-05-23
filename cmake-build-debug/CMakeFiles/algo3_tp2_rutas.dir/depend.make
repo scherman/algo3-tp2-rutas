@@ -14,9 +14,5 @@ CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o: ../DisjointSet.h
 CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o: ../Eje.h
 CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o: ../GrafoListaIncidencias.h
 CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o: ../main.cpp
-
-CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.o: ../DisjointSet.h
-CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.o: ../Eje.h
-CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.o: ../GrafoListaIncidencias.h
-CMakeFiles/algo3_tp2_rutas.dir/problema3.cpp.o: ../problema3.cpp
+CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o: ../problema3.h
 

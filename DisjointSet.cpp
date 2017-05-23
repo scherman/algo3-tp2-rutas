@@ -13,7 +13,7 @@ void DisjointSet::makeSet(int i) {
 
 }
 
-DisjointSet::Subset * DisjointSet::find(int i) {
+DisjointSet::Subset * DisjointSet::find(int i) const {
     // find root and make root as parent of i (path compression)
     if (subsets[i]->parent != i)
         subsets[i] = find(subsets[i]->parent);
@@ -26,46 +26,46 @@ void DisjointSet::unify(const Eje &e)
     Subset *xroot = find(e.origen);
     Subset *yroot = find(e.destino);
 
+    // Attach smaller rank tree under root of high rank tree (Union by Rank)
     if (xroot->rank < yroot->rank) {
-        // Attach smaller rank tree under root of high rank tree (Union by Rank)
-        yroot->mergeSubset(xroot);
-
-        // Add actual edge
+        if (xroot != yroot) yroot->size += xroot->size;
+        xroot->parent = yroot->parent;
+        yroot->edges.splice(yroot->edges.begin(), xroot->edges);
         yroot->edges.push_back(e);
-
     } else if (xroot->rank > yroot->rank) {
-        xroot->mergeSubset(yroot);
-
-        // Add actual edge
+        if (xroot != yroot) xroot->size += yroot->size;
+        yroot->parent = xroot->parent;
+        xroot->edges.splice(xroot->edges.begin(), yroot->edges);
         xroot->edges.push_back(e);
     } else {
         // If ranks are same, then make one as root and incrementits rank by one
-        xroot->mergeSubset(yroot);
-
-        // Add actual edge
+        if (xroot != yroot) xroot->size += yroot->size;
+        yroot->parent = xroot->parent;
+        xroot->edges.splice(xroot->edges.begin(), yroot->edges);
         xroot->edges.push_back(e);
+        xroot->rank++;
     }
 }
 
-std::list<DisjointSet::Subset*> DisjointSet::disjointSets() {
-    bool added[size] = {false};
+std::list<DisjointSet::Subset*> DisjointSet::disjointSets() const {
+    bool added[size+1] = {false};
     std::list<Subset*> result;
-    for (int i = 1; i < size; ++i) {
+    for (int i = 0; i < size; ++i) {
         Subset *setOfI = find(i);
-        if (!added[setOfI->parent - 1]) {
+        if (!added[setOfI->parent]) {
             result.push_back(setOfI);
-            added[setOfI->parent - 1] = true;
+            added[setOfI->parent] = true;
         }
     }
     return result;
 }
 
 DisjointSet::Subset & DisjointSet::mergeAllSets() {
-    std::list<Subset*> sets = disjointSets();
-    if (!sets.empty()) {
-        Subset* first = sets.front();
-        for (std::list<Subset*>::iterator it = sets.begin(); it != sets.end(); it++) {
-            first->mergeSubset(*it);
-        }
-    }
+//    std::list<Subset*> sets = disjointSets();
+//    if (!sets.empty()) {
+//        Subset* first = sets.front();
+//        for (std::list<Subset*>::iterator it = sets.begin(); it != sets.end(); it++) {
+//            first->mergeSubset(*it);
+//        }
+//    }
 }

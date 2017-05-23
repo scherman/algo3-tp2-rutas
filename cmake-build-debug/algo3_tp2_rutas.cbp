@@ -102,7 +102,7 @@
 		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/main.cpp">
 			<Option target="algo3_tp2_rutas"/>
 		</Unit>
-		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/problema3.cpp">
+		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/problema3.h">
 			<Option target="algo3_tp2_rutas"/>
 		</Unit>
 		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/CMakeLists.txt">

@@ -30,7 +30,9 @@ public:
     const std::list<Eje>* ejes() const {return _ejes;}
     void agregarEje(int origen, int destino, int peso) {_ejes->push_back({origen, destino, peso});};
     GrafoListaIncidencias AGMin();
-    GrafoListaIncidencias AGMax();
+
+
+    std::pair<GrafoListaIncidencias, int> AGMax();
 
     friend std::ostream& operator<<(std::ostream& os, const GrafoListaIncidencias& g) {
         for (std::list<Eje>::const_iterator it = g.ejes()->begin(); it != g.ejes()->end() ; ++it) {

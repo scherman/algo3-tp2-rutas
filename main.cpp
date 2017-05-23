@@ -1,6 +1,8 @@
-#include <iostream>
-#include "DisjointSet.h"
-#include "GrafoListaIncidencias.h"
+//#include <iostream>
+//#include "DisjointSet.h"
+//#include "GrafoListaIncidencias.h"
+
+#include "problema3.h"
 
 /*
  * Ejercicio 1
@@ -34,14 +36,43 @@ int maximoSubsidio();
 
 
 int main() {
-    GrafoListaIncidencias grafo(4);
-    grafo.agregarEje(0, 1, 10);
-    grafo.agregarEje(0, 2, 6);
-    grafo.agregarEje(0, 3, 5);
-    grafo.agregarEje(1, 3, 15);
-    grafo.agregarEje(2, 3, 4);
+    std::list<std::pair<Eje, bool>> rutas;
+    rutas.push_back(std::make_pair<Eje, bool>({0, 3, 50}, true));
+    rutas.push_back(std::make_pair<Eje, bool>({1, 3, 70}, true));
+    rutas.push_back(std::make_pair<Eje, bool>({2, 3, 80}, true));
+    rutas.push_back(std::make_pair<Eje, bool>({1, 2, 50}, true));
+    rutas.push_back(std::make_pair<Eje, bool>({0, 2, 10}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({0, 1, 10}, false));
 
-    std::cout << "Grafo: " << grafo << std::endl;
-    std::cout << "AGM de grafo: " << grafo.AGMin() << std::endl;
+    rutas.push_back(std::make_pair<Eje, bool>({4, 5, 90}, true));
+    rutas.push_back(std::make_pair<Eje, bool>({4, 0, 10}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({4, 1, 20}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({4, 2, 30}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({4, 3, 40}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({4, 6, 5}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({5, 0, 50}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({5, 1, 50}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({5, 2, 50}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({5, 3, 50}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({5, 6, 50}, false));
+
+    rutas.push_back(std::make_pair<Eje, bool>({6, 0, 99}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({6, 1, 99}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({6, 2, 99}, false));
+    rutas.push_back(std::make_pair<Eje, bool>({6, 3, 1}, false));
+
+    int n = 7;
+
+    reconstruirRutas(n, rutas);
+
+//    GrafoListaIncidencias grafo(4);
+//    grafo.agregarEje(0, 1, 10);
+//    grafo.agregarEje(0, 2, 6);
+//    grafo.agregarEje(0, 3, 5);
+//    grafo.agregarEje(1, 3, 15);
+//    grafo.agregarEje(2, 3, 4);
+//
+//    std::cout << "Grafo: " << grafo << std::endl;
+//    std::cout << "AGM de grafo: " << grafo.AGMin() << std::endl;
     return 0;
 }
