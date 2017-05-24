@@ -3,7 +3,8 @@
 //#include "GrafoListaIncidencias.h"
 
 #include "problema3.h"
-
+#include "Eje.h"
+#include <list>
 /*
  * Ejercicio 1
  * >> Grafo simple: "las ciudades estan conectadas por rutas bidireccionales"
@@ -36,6 +37,7 @@ int maximoSubsidio();
 
 
 int main() {
+
     std::list<std::pair<Eje, bool>> rutas;
     rutas.push_back(std::make_pair<Eje, bool>({0, 3, 50}, true));
     rutas.push_back(std::make_pair<Eje, bool>({1, 3, 70}, true));

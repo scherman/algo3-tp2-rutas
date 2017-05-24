@@ -1,54 +1,47 @@
 //
-// Created by jscherman on 21/05/17.
+// Created by jscherman on 24/05/17.
 //
 
-#ifndef ALGO3_TP2_RUTAS_LISTAINCIDENCIAS_H
-#define ALGO3_TP2_RUTAS_LISTAINCIDENCIAS_H
+#ifndef ALGO3_TP2_RUTAS_GRAFOLISTAINCIDENCIAS_H
+#define ALGO3_TP2_RUTAS_GRAFOLISTAINCIDENCIAS_H
 
-#include <list>
-#include "GrafoListaIncidencias.h"
+
 #include "DisjointSet.h"
-#include <ostream>
 #include "Eje.h"
 
 class GrafoListaIncidencias {
 
 public:
 
-    GrafoListaIncidencias(int n) : _cantNodos(n){
-        _ejes = new std::list<Eje>();
-    }
+    GrafoListaIncidencias(int n) : disjointSet(DisjointSet(n)){};
+    GrafoListaIncidencias(DisjointSet::Subset & subset) : disjointSet(DisjointSet(subset)){};
 
-    GrafoListaIncidencias(int n, std::list<Eje> &ejes) : _cantNodos(n){
-        _ejes = &ejes;
-    }
+//    GrafoListaIncidencias(DisjointSet & disjointSet) : disjointSet(disjointSet) {};
 
-    ~GrafoListaIncidencias() {
-        delete _ejes;
-    }
+    std::list<Eje> & ejes(){return disjointSet.edges();};
 
-    const std::list<Eje>* ejes() const {return _ejes;}
-    void agregarEje(int origen, int destino, int peso) {_ejes->push_back({origen, destino, peso});};
-    GrafoListaIncidencias AGMin();
+    void agregarEje(Eje e) {
+            disjointSet.unify(e);
+    };
 
-
-    std::pair<GrafoListaIncidencias, int> AGMax();
-
-    friend std::ostream& operator<<(std::ostream& os, const GrafoListaIncidencias& g) {
-        for (std::list<Eje>::const_iterator it = g.ejes()->begin(); it != g.ejes()->end() ; ++it) {
-            os << *it << " ";
+    std::list<DisjointSet::Subset*> componentesConexas() const{
+        std::list<DisjointSet::Subset*> asd = disjointSet.sets();
+        for (std::list<DisjointSet::Subset*>::iterator it = asd.begin(); it != asd.end(); ++it) {
+            std::cout << *it << ",";
         }
-        return os;
+        std::cout << std::endl;
+        return asd;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const GrafoListaIncidencias& s){
+        return os << "[Grafo] " << s.disjointSet;
     }
 
 private:
 
-    std::list<Eje> *_ejes;
-    int _cantNodos;
-
-    int pesoTotal;
+    DisjointSet disjointSet;
 
 };
 
 
-#endif //ALGO3_TP2_RUTAS_LISTAINCIDENCIAS_H
+#endif //ALGO3_TP2_RUTAS_GRAFOLISTAINCIDENCIAS_H

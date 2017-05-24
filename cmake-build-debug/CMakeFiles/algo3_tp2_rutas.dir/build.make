@@ -81,33 +81,9 @@ CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o.provides: CMakeFiles/algo3_tp2_rutas.d
 CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o.provides.build: CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o
 
 
-CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o: CMakeFiles/algo3_tp2_rutas.dir/flags.make
-CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o: ../DisjointSet.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o -c /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp
-
-CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp > CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.i
-
-CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp -o CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.s
-
-CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.requires:
-
-.PHONY : CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.requires
-
-CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.provides: CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.requires
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.provides.build
-.PHONY : CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.provides
-
-CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.provides.build: CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o
-
-
 CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o: CMakeFiles/algo3_tp2_rutas.dir/flags.make
 CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o: ../GrafoListaIncidencias.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o -c /home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.cpp
 
 CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.i: cmake_force
@@ -129,18 +105,42 @@ CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o.provides: CMakeFiles/
 CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o.provides.build: CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o
 
 
+CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o: CMakeFiles/algo3_tp2_rutas.dir/flags.make
+CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o: ../DisjointSet.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o -c /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp
+
+CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp > CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.i
+
+CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp -o CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.s
+
+CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.requires:
+
+.PHONY : CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.requires
+
+CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.provides: CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.requires
+	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.provides.build
+.PHONY : CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.provides
+
+CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.provides.build: CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o
+
+
 # Object files for target algo3_tp2_rutas
 algo3_tp2_rutas_OBJECTS = \
 "CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o" \
-"CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o" \
-"CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o"
+"CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o" \
+"CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o"
 
 # External object files for target algo3_tp2_rutas
 algo3_tp2_rutas_EXTERNAL_OBJECTS =
 
 algo3_tp2_rutas: CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o
-algo3_tp2_rutas: CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o
 algo3_tp2_rutas: CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o
+algo3_tp2_rutas: CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o
 algo3_tp2_rutas: CMakeFiles/algo3_tp2_rutas.dir/build.make
 algo3_tp2_rutas: CMakeFiles/algo3_tp2_rutas.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable algo3_tp2_rutas"
@@ -152,8 +152,8 @@ CMakeFiles/algo3_tp2_rutas.dir/build: algo3_tp2_rutas
 .PHONY : CMakeFiles/algo3_tp2_rutas.dir/build
 
 CMakeFiles/algo3_tp2_rutas.dir/requires: CMakeFiles/algo3_tp2_rutas.dir/main.cpp.o.requires
-CMakeFiles/algo3_tp2_rutas.dir/requires: CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.requires
 CMakeFiles/algo3_tp2_rutas.dir/requires: CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o.requires
+CMakeFiles/algo3_tp2_rutas.dir/requires: CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o.requires
 
 .PHONY : CMakeFiles/algo3_tp2_rutas.dir/requires
 
