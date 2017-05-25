@@ -20,11 +20,6 @@ public:
         int rank;
         int size;
 
-        ~Subset(){
-//            std::cout << "DESTRUCCION Subset" << this << std::endl;
-        }
-
-
         friend std::ostream& operator<<(std::ostream& os, const Subset& s){
             os << "[Subset] parent: " << s.parent << ", rank: " << s.rank << ", size: " << s.size << ", edges: ";
             for (std::list<Eje>::const_iterator it = s.edges.begin(); it != s.edges.end(); it++) {
@@ -37,6 +32,10 @@ public:
         bool operator==(const Subset& s){
             return parent == s.parent;
         }
+
+        bool operator!=(const Subset& s){
+            return parent != s.parent;
+        }
     };
 
     DisjointSet(int n) : totalSize(n) {
@@ -46,17 +45,20 @@ public:
         }
     };
 
-    DisjointSet(int n, Subset & subset) : totalSize(subset.size), totalEdges(subset.edges){
-        subsets = new Subset*[n]();
-        subsets[subset.parent] = &subset;
-        for (int i = 0; i < n; ++i) {
-            makeSet(i);
-            subsets[i]->parent = subset.parent;
-        }
-    };
+//    DisjointSet(int n, Subset & subset) : totalSize(subset.size), totalEdges(subset.edges){
+//        subsets = new Subset*[n]();
+//        subsets[subset.parent] = &subset;
+//        for (int i = 0; i < n; ++i) {
+//            makeSet(i);
+//            subsets[i]->parent = subset.parent;
+//        }
+//    };
 
     ~DisjointSet(){
-//        std::cout << "DESTRUCCION DisjointSet " << this << std::endl;
+        for (int i = 0; i < totalSize; ++i) {
+            delete subsets[i];
+        }
+        delete[] subsets;
     }
 
     std::list<Eje> & edges() {return totalEdges;};
@@ -115,8 +117,8 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const DisjointSet& d){
-        os << "[DisjointSet] totalSize: "<< d.totalSize << ", subsets: " << std::endl;
         std::list<Subset*> subsets = d.sets();
+        os << "[DisjointSet] totalSize: "<< d.totalSize << ", " << subsets.size() << " subsets: " << std::endl;
         for (std::list<Subset*>::const_iterator it = subsets.begin(); it != subsets.end(); it++) {
             os << "--> " << **it << std::endl;
         }

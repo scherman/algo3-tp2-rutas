@@ -14,9 +14,6 @@ class GrafoListaIncidencias {
 public:
 
     GrafoListaIncidencias(int n) : disjointSet(DisjointSet(n)){};
-//    GrafoListaIncidencias(int n, DisjointSet::Subset & subset) : disjointSet(DisjointSet(n, subset)){};
-
-//    GrafoListaIncidencias(DisjointSet & disjointSet) : disjointSet(disjointSet) {};
 
     std::list<Eje> & ejes(){return disjointSet.edges();};
 

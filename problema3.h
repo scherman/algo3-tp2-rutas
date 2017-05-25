@@ -12,9 +12,9 @@
 #include "GrafoListaIncidencias.h"
 
 
-int AGMax(int numberOfNodes, int n, std::list<Eje> & edges) {
+int AGMax(int totalSize, int componentSize, std::list<Eje> & edges) {
 
-    DisjointSet uds(numberOfNodes);
+    DisjointSet uds(totalSize);
 
     // Invierto aristas
     for (std::list<Eje>::iterator it = edges.begin(); it != edges.end() ; it++) it->peso = it->peso * (-1);
@@ -24,14 +24,14 @@ int AGMax(int numberOfNodes, int n, std::list<Eje> & edges) {
 
     int costoDestruccion = 0;
     std::list<Eje>::iterator itEjes = edges.begin();
-    for (int i = 0; i < n && itEjes != edges.end(); ++i) {
+    for (int i = 0; i < componentSize && itEjes != edges.end(); ++i) {
         Eje &eje = *itEjes;
         eje.peso = eje.peso * (-1);
 
         DisjointSet::Subset setOrigen = uds.find(eje.origen);
         DisjointSet::Subset setDestino = uds.find(eje.destino);
 
-        if (setDestino ==setOrigen) {
+        if (setDestino == setOrigen) {
             // Ruta innecesaria. Destruirla y sumar costo de destruccion
             costoDestruccion += eje.peso;
             itEjes = edges.erase(itEjes);
@@ -43,6 +43,33 @@ int AGMax(int numberOfNodes, int n, std::list<Eje> & edges) {
     }
 
     return costoDestruccion;
+}
+
+int AGMin(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExistentes) {
+
+    DisjointSet uds(n);
+    // Agrego rutasExistentes
+    for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end() ; it++) uds.unify(*it);
+
+    // Ordeno de forma ascendente
+    rutasNoExistentes.sort();
+
+    int costoConstruccion = 0;
+    for (std::list<Eje>::iterator itEjes = rutasNoExistentes.begin(); itEjes != rutasNoExistentes.end(); ++itEjes) {
+        Eje &eje = *itEjes;
+
+        DisjointSet::Subset setOrigen = uds.find(eje.origen);
+        DisjointSet::Subset setDestino = uds.find(eje.destino);
+
+        if (setDestino != setOrigen) {
+            // La ruta une componentes desconectadas. Construirla
+            uds.unify(eje);
+            rutasExistentes.push_back(eje);
+            costoConstruccion += eje.peso;
+        }
+    }
+
+    return costoConstruccion;
 }
 
 /*
@@ -58,29 +85,36 @@ int AGMax(int numberOfNodes, int n, std::list<Eje> & edges) {
  *          -1
  * Output:  precioTotal cantRutasFinales c11 c12 c21 c22 ... cr1 cr2
  */
-int reconstruirRutas(int n, std::list<std::pair<Eje, bool>> rutas){
-    std::list<Eje> rutasNoExistentes;
+int reconstruirRutas(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExistentes){
 
     GrafoListaIncidencias g(n);
-    for (std::list<std::pair<Eje, bool>>::iterator it = rutas.begin(); it != rutas.end(); ++it) {
-        std::pair<Eje, bool> ruta = *it;
-        if (ruta.second) { // Existe ruta?
-            g.agregarEje(ruta.first);
-        } else {
-            rutasNoExistentes.push_back(ruta.first);
-        }
+    for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end(); it++) {
+        g.agregarEje(*it);
     }
 
+    std::list<Eje> rutasResultantes;
+    int precioTotal = 0;
+
     std::cout << "Grafo inicial: " << g << std::endl;
-    int precioTotalDestruccion = 0;
     std::list<DisjointSet::Subset*> componentesConexas = g.componentesConexas();
     for (std::list<DisjointSet::Subset*>::iterator it = componentesConexas.begin(); it != componentesConexas.end(); it++) {
         DisjointSet::Subset &componente = **it;
         int precioDestruccion = AGMax(n, componente.size, componente.edges);
-        precioTotalDestruccion += precioDestruccion;
+        precioTotal += precioDestruccion;
+        rutasResultantes.splice(rutasResultantes.begin(), componente.edges);
     }
-    std::cout << "Grafo final: " << g << std::endl;
 
+    for (std::list<Eje>::iterator it = rutasResultantes.begin(); it != rutasResultantes.end(); it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    int precioConstruccion = AGMin(n, rutasResultantes, rutasNoExistentes);
+    precioTotal += precioConstruccion;
+    for (std::list<Eje>::iterator it = rutasResultantes.begin(); it != rutasResultantes.end(); it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << " PrecioTotal: " << precioTotal << std::endl;
 
 }
 
