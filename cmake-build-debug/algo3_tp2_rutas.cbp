@@ -84,16 +84,10 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp">
-			<Option target="algo3_tp2_rutas"/>
-		</Unit>
 		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h">
 			<Option target="algo3_tp2_rutas"/>
 		</Unit>
 		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h">
-			<Option target="algo3_tp2_rutas"/>
-		</Unit>
-		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.cpp">
 			<Option target="algo3_tp2_rutas"/>
 		</Unit>
 		<Unit filename="/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h">

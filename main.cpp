@@ -38,6 +38,7 @@ int maximoSubsidio();
 
 int main() {
 
+    int n = 7;
     std::list<Eje> rutasExistentes, rutasNoExistentes;
 
     rutasExistentes.push_back({0, 3, 50});
@@ -63,9 +64,18 @@ int main() {
     rutasNoExistentes.push_back({6, 2, 99});
     rutasNoExistentes.push_back({6, 3, 1});
 
-    int n = 7;
+    std::cout << "Rutas iniciales: ";
+    for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end(); it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
 
-    reconstruirRutas(n, rutasExistentes, rutasNoExistentes);
+    std::pair<std::list<Eje>, int> resultado = reconstruirRutas(n, rutasExistentes, rutasNoExistentes);
 
+    std::cout << "Precio: " << resultado.second << " | Rutas resultantes: ";
+    for (std::list<Eje>::iterator it = resultado.first.begin(); it != resultado.first.end(); it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
     return 0;
 }

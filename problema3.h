@@ -85,7 +85,7 @@ int AGMin(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExist
  *          -1
  * Output:  precioTotal cantRutasFinales c11 c12 c21 c22 ... cr1 cr2
  */
-int reconstruirRutas(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExistentes){
+std::pair<std::list<Eje>, int> reconstruirRutas(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExistentes){
 
     GrafoListaIncidencias g(n);
     for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end(); it++) {
@@ -95,26 +95,19 @@ int reconstruirRutas(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & r
     std::list<Eje> rutasResultantes;
     int precioTotal = 0;
 
-    std::cout << "Grafo inicial: " << g << std::endl;
+//    std::cout << "Grafo inicial: " << g << std::endl;
+
     std::list<DisjointSet::Subset*> componentesConexas = g.componentesConexas();
     for (std::list<DisjointSet::Subset*>::iterator it = componentesConexas.begin(); it != componentesConexas.end(); it++) {
         DisjointSet::Subset &componente = **it;
-        int precioDestruccion = AGMax(n, componente.size, componente.edges);
-        precioTotal += precioDestruccion;
+        precioTotal += AGMax(n, componente.size, componente.edges);
         rutasResultantes.splice(rutasResultantes.begin(), componente.edges);
     }
 
-    for (std::list<Eje>::iterator it = rutasResultantes.begin(); it != rutasResultantes.end(); it++) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
-
     int precioConstruccion = AGMin(n, rutasResultantes, rutasNoExistentes);
     precioTotal += precioConstruccion;
-    for (std::list<Eje>::iterator it = rutasResultantes.begin(); it != rutasResultantes.end(); it++) {
-        std::cout << *it << " ";
-    }
-    std::cout << " PrecioTotal: " << precioTotal << std::endl;
+
+    return std::make_pair(rutasResultantes, precioTotal);
 
 }
 

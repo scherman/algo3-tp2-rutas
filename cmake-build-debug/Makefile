@@ -123,60 +123,6 @@ algo3_tp2_rutas/fast:
 	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/build
 .PHONY : algo3_tp2_rutas/fast
 
-DisjointSet.o: DisjointSet.cpp.o
-
-.PHONY : DisjointSet.o
-
-# target to build an object file
-DisjointSet.cpp.o:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.o
-.PHONY : DisjointSet.cpp.o
-
-DisjointSet.i: DisjointSet.cpp.i
-
-.PHONY : DisjointSet.i
-
-# target to preprocess a source file
-DisjointSet.cpp.i:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.i
-.PHONY : DisjointSet.cpp.i
-
-DisjointSet.s: DisjointSet.cpp.s
-
-.PHONY : DisjointSet.s
-
-# target to generate assembly for a file
-DisjointSet.cpp.s:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/DisjointSet.cpp.s
-.PHONY : DisjointSet.cpp.s
-
-GrafoListaIncidencias.o: GrafoListaIncidencias.cpp.o
-
-.PHONY : GrafoListaIncidencias.o
-
-# target to build an object file
-GrafoListaIncidencias.cpp.o:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.o
-.PHONY : GrafoListaIncidencias.cpp.o
-
-GrafoListaIncidencias.i: GrafoListaIncidencias.cpp.i
-
-.PHONY : GrafoListaIncidencias.i
-
-# target to preprocess a source file
-GrafoListaIncidencias.cpp.i:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.i
-.PHONY : GrafoListaIncidencias.cpp.i
-
-GrafoListaIncidencias.s: GrafoListaIncidencias.cpp.s
-
-.PHONY : GrafoListaIncidencias.s
-
-# target to generate assembly for a file
-GrafoListaIncidencias.cpp.s:
-	$(MAKE) -f CMakeFiles/algo3_tp2_rutas.dir/build.make CMakeFiles/algo3_tp2_rutas.dir/GrafoListaIncidencias.cpp.s
-.PHONY : GrafoListaIncidencias.cpp.s
-
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -213,12 +159,6 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... algo3_tp2_rutas"
-	@echo "... DisjointSet.o"
-	@echo "... DisjointSet.i"
-	@echo "... DisjointSet.s"
-	@echo "... GrafoListaIncidencias.o"
-	@echo "... GrafoListaIncidencias.i"
-	@echo "... GrafoListaIncidencias.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -28,7 +28,6 @@ public:
             return os;
         }
 
-
         bool operator==(const Subset& s){
             return parent == s.parent;
         }
@@ -45,15 +44,6 @@ public:
         }
     };
 
-//    DisjointSet(int n, Subset & subset) : totalSize(subset.size), totalEdges(subset.edges){
-//        subsets = new Subset*[n]();
-//        subsets[subset.parent] = &subset;
-//        for (int i = 0; i < n; ++i) {
-//            makeSet(i);
-//            subsets[i]->parent = subset.parent;
-//        }
-//    };
-
     ~DisjointSet(){
         for (int i = 0; i < totalSize; ++i) {
             delete subsets[i];
@@ -62,9 +52,6 @@ public:
     }
 
     std::list<Eje> & edges() {return totalEdges;};
-
-    int size() {return totalSize;};
-
 
     void makeSet(int v) {
         subsets[v] = new Subset();

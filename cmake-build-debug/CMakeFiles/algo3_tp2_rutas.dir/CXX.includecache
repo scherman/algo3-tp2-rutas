@@ -6,10 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.cpp
-DisjointSet.h
-/home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
-
 /home/jscherman/CLionProjects/algo3-tp2-rutas/DisjointSet.h
 Eje.h
 /home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
@@ -21,10 +17,6 @@ iostream
 /home/jscherman/CLionProjects/algo3-tp2-rutas/Eje.h
 ostream
 -
-
-/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.cpp
-GrafoListaIncidencias.h
-/home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
 
 /home/jscherman/CLionProjects/algo3-tp2-rutas/GrafoListaIncidencias.h
 DisjointSet.h
