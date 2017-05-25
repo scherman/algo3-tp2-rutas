@@ -14,7 +14,7 @@ class GrafoListaIncidencias {
 public:
 
     GrafoListaIncidencias(int n) : disjointSet(DisjointSet(n)){};
-    GrafoListaIncidencias(DisjointSet::Subset & subset) : disjointSet(DisjointSet(subset)){};
+//    GrafoListaIncidencias(int n, DisjointSet::Subset & subset) : disjointSet(DisjointSet(n, subset)){};
 
 //    GrafoListaIncidencias(DisjointSet & disjointSet) : disjointSet(disjointSet) {};
 
@@ -25,12 +25,7 @@ public:
     };
 
     std::list<DisjointSet::Subset*> componentesConexas() const{
-        std::list<DisjointSet::Subset*> asd = disjointSet.sets();
-        for (std::list<DisjointSet::Subset*>::iterator it = asd.begin(); it != asd.end(); ++it) {
-            std::cout << *it << ",";
-        }
-        std::cout << std::endl;
-        return asd;
+        return disjointSet.sets();
     }
 
     friend std::ostream& operator<<(std::ostream& os, const GrafoListaIncidencias& s){
