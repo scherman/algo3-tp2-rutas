@@ -33,7 +33,7 @@ bool tiene_ciclos_negativos(std::list<Eje> grafo, int n, int m, int c) {
         int v = eje.destino;
         int weight = eje.peso;
         if (dist[u] != infinito && dist[u] + weight < dist[v]){
-            b = false;
+            b = false; //Tiene ciclo negativo
         }
     }
     return b;
@@ -76,8 +76,8 @@ int main(int argc, char** argv){
 			c2 = stoi(strTok[1]);
 			p = stoi(strTok[2]);
 			grafo.push_back({c1, c2, p});
-			if (p > c) {
-                c = p;
+			if (p > c) { //buscar el mayor peaje
+                		c = p;
 			}
 		}
 		cout << problema_dos(grafo, n, m, c) << endl;
