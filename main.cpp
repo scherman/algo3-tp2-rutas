@@ -37,48 +37,6 @@ int maximoSubsidio();
 
 
 int main() {
-
-    testearTiempos(100, 0, false);
-
-//    int n = 7;
-//    std::list<Eje> rutasExistentes, rutasNoExistentes;
-//
-//    rutasExistentes.push_back({0, 3, 50});
-//    rutasExistentes.push_back({1, 3, 70});
-//    rutasExistentes.push_back({2, 3, 80});
-//    rutasExistentes.push_back({1, 2, 50});
-//    rutasExistentes.push_back({4, 5, 90});
-//
-//    rutasNoExistentes.push_back({0, 2, 10});
-//    rutasNoExistentes.push_back({0, 1, 10});
-//    rutasNoExistentes.push_back({4, 0, 10});
-//    rutasNoExistentes.push_back({4, 1, 20});
-//    rutasNoExistentes.push_back({4, 2, 30});
-//    rutasNoExistentes.push_back({4, 3, 40});
-//    rutasNoExistentes.push_back({4, 6, 5});
-//    rutasNoExistentes.push_back({5, 0, 50});
-//    rutasNoExistentes.push_back({5, 1, 50});
-//    rutasNoExistentes.push_back({5, 2, 50});
-//    rutasNoExistentes.push_back({5, 3, 50});
-//    rutasNoExistentes.push_back({5, 6, 50});
-//    rutasNoExistentes.push_back({6, 0, 99});
-//    rutasNoExistentes.push_back({6, 1, 99});
-//    rutasNoExistentes.push_back({6, 2, 99});
-//    rutasNoExistentes.push_back({6, 3, 1});
-//
-//    std::cout << "Rutas iniciales: ";
-//    for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end(); it++) {
-//        std::cout << *it << " ";
-//    }
-//    std::cout << std::endl;
-//
-//    std::pair<std::list<Eje>, int> resultado = reconstruirRutas(n, rutasExistentes, rutasNoExistentes);
-//
-//    std::cout << "Precio: " << resultado.second << " "
-//            "Rutas resultantes: ";
-//    for (std::list<Eje>::iterator it = resultado.first.begin(); it != resultado.first.end(); it++) {
-//        std::cout << *it << " ";
-//    }
-//    std::cout << std::endl;
+    escribirTiemposEj3(500, 5);
     return 0;
 }
