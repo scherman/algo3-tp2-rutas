@@ -10,9 +10,19 @@
 #include <iostream>
 #include "Eje.h"
 #include "GrafoListaIncidencias.h"
+#include <random>
+#include <set>
+#include <algorithm>
 
 
-int AGMax(int totalSize, int componentSize, std::list<Eje> & edges) {
+void imprimirEjes(std::list<Eje> & ejes) {
+    for (std::list<Eje>::iterator it = ejes.begin(); it != ejes.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+}
+
+std::pair<std::list<Eje>, long> AGMax(int totalSize, int componentSize, std::list<Eje> & edges) {
 
     DisjointSet uds(totalSize);
 
@@ -22,9 +32,10 @@ int AGMax(int totalSize, int componentSize, std::list<Eje> & edges) {
     // Ordeno de forma ascendente
     edges.sort();
 
-    int costoDestruccion = 0;
+    std::list<Eje> agm;
+    long costoDestruccion = 0;
     std::list<Eje>::iterator itEjes = edges.begin();
-    for (int i = 0; i < componentSize && itEjes != edges.end(); ++i) {
+    while (agm.size() < componentSize - 1 && itEjes != edges.end()) {
         Eje &eje = *itEjes;
         eje.peso = eje.peso * (-1);
 
@@ -34,28 +45,32 @@ int AGMax(int totalSize, int componentSize, std::list<Eje> & edges) {
         if (setDestino == setOrigen) {
             // Ruta innecesaria. Destruirla y sumar costo de destruccion
             costoDestruccion += eje.peso;
-            itEjes = edges.erase(itEjes);
         } else {
             // Dejar ruta
             uds.unify(eje);
-            itEjes++;
+            agm.push_back(eje);
         }
+        itEjes++;
     }
-
-    return costoDestruccion;
+    return std::make_pair(agm, costoDestruccion);
 }
 
-int AGMin(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExistentes) {
+std::pair<std::list<Eje>, int> AGMin(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExistentes) {
 
     DisjointSet uds(n);
+
     // Agrego rutasExistentes
-    for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end() ; it++) uds.unify(*it);
+    for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end() ; it++) {
+        uds.unify(*it);
+    }
 
     // Ordeno de forma ascendente
     rutasNoExistentes.sort();
 
     int costoConstruccion = 0;
-    for (std::list<Eje>::iterator itEjes = rutasNoExistentes.begin(); itEjes != rutasNoExistentes.end(); ++itEjes) {
+    std::list<Eje> rutasNuevas;
+    std::list<Eje>::iterator itEjes = rutasNoExistentes.begin();
+    while (rutasNuevas.size() + rutasExistentes.size() < n - 1 && itEjes != rutasNoExistentes.end()) {
         Eje &eje = *itEjes;
 
         DisjointSet::Subset setOrigen = uds.find(eje.origen);
@@ -64,12 +79,13 @@ int AGMin(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExist
         if (setDestino != setOrigen) {
             // La ruta une componentes desconectadas. Construirla
             uds.unify(eje);
-            rutasExistentes.push_back(eje);
+            rutasNuevas.push_back(eje);
             costoConstruccion += eje.peso;
         }
+        ++itEjes;
     }
 
-    return costoConstruccion;
+    return std::make_pair(rutasNuevas, costoConstruccion);
 }
 
 /*
@@ -85,30 +101,138 @@ int AGMin(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExist
  *          -1
  * Output:  precioTotal cantRutasFinales c11 c12 c21 c22 ... cr1 cr2
  */
-std::pair<std::list<Eje>, int> reconstruirRutas(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExistentes){
+std::pair<std::list<Eje>, long> reconstruirRutas(int n, std::list<Eje> & rutasExistentes, std::list<Eje> & rutasNoExistentes){
 
+    std::list<Eje> rutasResultantes;
+    long precioTotal = 0;
+
+    // Paso 1: Armo componentes conexas
     GrafoListaIncidencias g(n);
     for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end(); it++) {
         g.agregarEje(*it);
     }
 
-    std::list<Eje> rutasResultantes;
-    int precioTotal = 0;
-
-//    std::cout << "Grafo inicial: " << g << std::endl;
-
+    // Paso 2: Destruyo rutas innecesarias mas baratas
     std::list<DisjointSet::Subset*> componentesConexas = g.componentesConexas();
+//    std::cout << "Cant componentes conexas: " << componentesConexas.size() << std::endl;
     for (std::list<DisjointSet::Subset*>::iterator it = componentesConexas.begin(); it != componentesConexas.end(); it++) {
         DisjointSet::Subset &componente = **it;
-        precioTotal += AGMax(n, componente.size, componente.edges);
-        rutasResultantes.splice(rutasResultantes.begin(), componente.edges);
+        std::pair<std::list<Eje>, long> destruccion = AGMax(n, componente.size, componente.edges);
+        rutasResultantes.splice(rutasResultantes.begin(), destruccion.first);
+        precioTotal += destruccion.second;
     }
+//    std::cout << "Rutas dps de destruccion (" << rutasResultantes.size() << "): ";
+//    imprimirEjes(rutasResultantes);
 
-    int precioConstruccion = AGMin(n, rutasResultantes, rutasNoExistentes);
-    precioTotal += precioConstruccion;
+    // Paso 3: Construyo las rutas nuevas más baratas (y necesarias)
+    std::pair<std::list<Eje>, long> construccion = AGMin(n, rutasResultantes, rutasNoExistentes);
+    rutasResultantes.splice(rutasResultantes.begin(), construccion.first);
+    precioTotal += construccion.second;
+//    std::cout << "Rutas dps de construccion(" << rutasResultantes.size() << "): ";
+//    imprimirEjes(rutasResultantes);
 
     return std::make_pair(rutasResultantes, precioTotal);
 
+}
+
+// Devuelve matriz de adyacencia y de incidencias
+std::pair<std::list<Eje>*, int**> generarGrafo(int n, int m, bool conexo) {
+    std::list<Eje> *rutasExistentes = new std::list<Eje>();
+
+    int **ejesAgregados= new int*[n];
+    for(int i = 0; i < n; ++i) {
+        ejesAgregados[i] = new int[n];
+        for(int r = 0; r < n; ++r) {
+            if (i == r) {
+                ejesAgregados[i][r] = 1;
+            } else {
+                ejesAgregados[i][r] = 0;
+            }
+        }
+    }
+
+    std::random_device r;
+    std::default_random_engine e1(r());
+    std::uniform_int_distribution<int> uniform_dist_vertices(0, n-1);
+    std::uniform_int_distribution<int> uniform_dist_pesos(0, 5000);
+    if (conexo) {
+        std::set<int> *vecinos= new std::set<int>();
+
+        int origen = uniform_dist_vertices(e1);
+        while(rutasExistentes->size() < m) {
+            int destino = uniform_dist_vertices(e1);
+            if (ejesAgregados[origen][destino] == 0) {
+                // Todavia no agregue esta arista. La agrego
+                int peso = uniform_dist_pesos(e1);
+                ejesAgregados[origen][destino] = 1;
+                ejesAgregados[destino][origen] = 1;
+                rutasExistentes->push_back({origen, destino, peso});
+                origen = destino;
+            }
+        }
+    } else {
+        // Agrego m rutas existentes aleatorias
+        while (rutasExistentes->size() < m) {
+            int origen = uniform_dist_vertices(e1);
+            int destino = uniform_dist_vertices(e1);
+            if (ejesAgregados[origen][destino] == 0) {
+                // Todavia no agregue esta arista. La agrego
+                int peso = uniform_dist_pesos(e1);
+                ejesAgregados[origen][destino] = 1;
+                ejesAgregados[destino][origen] = 1;
+                rutasExistentes->push_back({origen, destino, peso});
+            }
+        }
+    }
+    return std::make_pair(rutasExistentes, ejesAgregados);
+}
+
+void testearTiempos(int n, int m, bool conexo) {
+    if (m > (n*(n-1))/2) return;
+    if (conexo && m < n - 1) return;
+
+    std::random_device r;
+    std::default_random_engine e1(r());
+    std::uniform_int_distribution<int> uniform_dist_vertices(0, n-1);
+    std::uniform_int_distribution<int> uniform_dist_pesos(0, 500);
+
+    std::pair<std::list<Eje>* , int**> grafo = generarGrafo(n, m, conexo);
+    std::list<Eje>* rutasExistentes = grafo.first;
+    int** ejesAgregados = grafo.second;
+//
+    // Agrego rutas no existentes
+    std::list<Eje> *rutasNoExistentes = new std::list<Eje>();
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (!ejesAgregados[i][j] && !ejesAgregados[j][i]) {
+                int peso = uniform_dist_pesos(e1);
+                ejesAgregados[i][j] = 1;
+                ejesAgregados[j][i] = 1;
+                rutasNoExistentes->push_back({i, j, peso});
+            }
+        }
+    }
+
+    std::cout << "Existentes(" << rutasExistentes->size() << "): " ;
+    for (std::list<Eje>::iterator it = rutasExistentes->begin(); it != rutasExistentes->end(); it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+
+    std::cout << "No existentes(" << rutasNoExistentes->size() << "): " ;
+    for (std::list<Eje>::iterator it = rutasNoExistentes->begin(); it != rutasNoExistentes->end(); it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+
+    std::pair<std::list<Eje>, long> pair = reconstruirRutas(n, *rutasExistentes, *rutasNoExistentes);
+    std::cout << "Grafo final (costo: " << pair.second << ", " << pair.first.size() << " ejes): " ;
+    for (std::list<Eje>::iterator it = pair.first.begin(); it != pair.first.end(); it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+    delete rutasExistentes, rutasNoExistentes;
 }
 
 #endif //ALGO3_TP2_RUTAS_PROBLEMA3_H
