@@ -1,2 +1,9 @@
 cmake-build-debug/
 .idea/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+ej1
+ej2
+ej3
