@@ -319,28 +319,30 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
 }
 
 
+int main(int argc, char *argv[])
+{
+    std::vector<std::string> allArgs(argv, argv + argc);
+    int n = std::stoi(allArgs[1]);
+    std::list<Eje> rutasExistentes;
+    std::list<Eje> rutasNoExistentes;
+    for (int i = 2; i < allArgs.size() && allArgs[i] != "-1"; i = i + 4) {
+        int origen = stoi(allArgs[i]);
+        int destino = stoi(allArgs[i+1]);
+        bool existe = allArgs[i+2] == "1";
+        int precio = stoi(allArgs[i+3]);
 
+        if (existe) rutasExistentes.push_back({origen, destino, precio});
+        else rutasNoExistentes.push_back({origen, destino, precio});
+    }
 
-//std::cout << "Existentes(" << rutasExistentes.size() << "): " ;
-//for (std::list<Eje>::iterator it = rutasExistentes.begin(); it != rutasExistentes.end(); it++) {
-//std::cout << *it << " ";
-//}
-//std::cout << std::endl;
-//
-//
-//std::cout << "No existentes(" << rutasNoExistentes.size() << "): " ;
-//for (std::list<Eje>::iterator it = rutasNoExistentes.begin(); it != rutasNoExistentes.end(); it++) {
-//std::cout << *it << " ";
-//}
-//std::cout << std::endl;
-//
-//std::pair<std::list<Eje>, long> pair = reconstruirRutas(n, rutasExistentes, rutasNoExistentes);
-//
-//std::cout << "Grafo final (costo: " << pair.second << ", " << pair.first.size() << " ejes): " ;
-//for (std::list<Eje>::iterator it = pair.first.begin(); it != pair.first.end(); it++) {
-//std::cout << *it << " ";
-//}
-//std::cout << std::endl;
-
+    std::pair<std::list<Eje>, int> resultado = reconstruirRutas(n, rutasExistentes, rutasNoExistentes);
+    std::list<Eje> rutas = resultado.first;
+    int costo = resultado.second;
+    std::cout << costo << " " << rutas.size();
+    for (std::list<Eje>::iterator it = rutas.begin(); it != rutas.end(); it++) {
+        std::cout << " " << it->origen << " " << it->destino;
+    }
+    std::cout << std::endl;
+}
 
 #endif //ALGO3_TP2_RUTAS_PROBLEMA3_H

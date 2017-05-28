@@ -1,3 +1,0 @@
-/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/jscherman/CLionProjects/algo3-tp2-rutas/cmake-build-debug/CMakeFiles/algo3_tp2_rutas.dir
