@@ -46,7 +46,7 @@ int main(int argc, char** argv){
 		auto it = nodos.begin();
 		advance(it, rand() % nodos.size()); //Obtener un nodo aleatoriamente
 		int vecino = *it;
-		G[nodoActual][vecino] = (rand() % 100);
+		G[nodoActual][vecino] = (rand() % 100 + 1);
 		G[vecino][nodoActual] = G[nodoActual][vecino];
 		aristasTotales++;
 
@@ -57,6 +57,7 @@ int main(int argc, char** argv){
 
 	//Agregar las aristas que falten
 	m = min(m, (unsigned)(n*(n-1)/2));
+	int agregados = 0;
 	while(aristasTotales < m){
 		if(nodos.empty()) nodos = usados;
 
@@ -73,20 +74,16 @@ int main(int argc, char** argv){
 			unsigned idxVecino = rand() % vecinos.size();
 			unsigned nodo2 = vecinos[idxVecino];
 			if(G[nodo1][nodo2] == 0){
-				G[nodo1][nodo2] = (rand() % 100);
+				G[nodo1][nodo2] = (rand() % 100 + 1);
 				G[nodo2][nodo1] = G[nodo1][nodo2];
 				aristasTotales++;
+				agregados++;
 				encontrado = true;
 			}
 			vecinos[idxVecino] = vecinos[vecinos.size() - 1];
 			vecinos.pop_back();
 		}
 	}
-
-	bool simetrico = true;
-	for(int i = 0; i < n; i++)
-		for(int j = 0; j < n; j++)
-			simetrico == simetrico && (G[i][j] == G[j][i]);
 
 	//Agregar rutas premium
 	int premiumTotales = 0;
@@ -122,7 +119,7 @@ int main(int argc, char** argv){
 	}
 
 	//Imprimir formato de salida
-	printf("%d %d\n", n, aristasTotales);
+	printf("%d %d\n", n, m);
 	printf("%d %d %d\n", n0, n1, k);
 	for(unsigned i = 0; i < n; i++){
 		for(unsigned j = 0; j < n; j++){
@@ -130,7 +127,8 @@ int main(int argc, char** argv){
 			int premium = (G[i][j] < 0);
 			printf("%d %d %d %d\n", i+1, j+1, premium, abs(G[i][j]));
 			//Eliminar elemento simétrico
-			G[j][i] = 0;
+			G[j][i] = 0;	
+			
 		}
 	}
 	printf("-1 -1\n");
