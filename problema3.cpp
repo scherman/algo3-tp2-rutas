@@ -321,6 +321,8 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
 
 int main(int argc, char *argv[])
 {
+    if (argc <= 1) throw std::invalid_argument( "No se ingreso nada!" );
+
     std::vector<std::string> allArgs(argv, argv + argc);
     int n = std::stoi(allArgs[1]);
     std::list<Eje> rutasExistentes;
