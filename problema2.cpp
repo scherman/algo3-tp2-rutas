@@ -1,94 +1,52 @@
-#include <vector>
 #include <utility>
 #include <iostream>
+#include <fstream>
 #include <limits>
 #include <math.h>
 
 #include "listaAdyacencia.hpp"
 #include "stringTokenizer.hpp"
+#include "Eje.h"
 
 using namespace std;
 
-bool tiene_ciclos_negativos(vector< vector<int> > v, int n, int c){
+bool tiene_ciclos_negativos(std::list<Eje> grafo, int n, int m, int c) {
+    bool b = true;
+    int dist[n];
     int infinito = std::numeric_limits<int>::max();
-    for (int i = 0; i < n; i++){ //resta c a cada peaje
-        for (int j = 0; j < n; j++) {
-            if (i != j && v[i][j] != infinito) {
-                v[i][j] = v[i][j] - c;
-            }
+    for (int i = 0; i < n; i++)
+        dist[i]   = infinito;
+    dist[0] = 0;
+    for (int i = 1; i <= n-1; i++) {
+        for (std::list<Eje>::iterator it = grafo.begin(); it != grafo.end(); it++) {
+            Eje &eje = *it;
+            int u = eje.origen;
+            int v = eje.destino;
+            int weight = eje.peso;
+            if (dist[u] != infinito && dist[u] + weight < dist[v])
+                dist[v] = dist[u] + weight;
         }
     }
-    //Algoritmo de Dantzing completo
-    bool b = true;
-    for(int k = 0; k < n-1; k++){
-        for (int i = 0; i < k; i++){
-            int minimo = v[i][0] + v[0][k];
-            for (int j = 0; j < k; j++) {
-                if (v[k][i] + v[i][k] < minimo){
-                    minimo = v[i][j] + v[j][k+1];
-                }
-            }
-            v[i][k+1] = minimo;
-            minimo = v[k][0] + v[0][i];
-            for (int j = 0; j < k; j++) {
-                if (v[k][i] + v[i][k] < minimo){
-                    minimo = v[k][j] + v[j][i];
-                }
-            }
-            v[k+1][i] = minimo;
-        }
-        int minimo = v[k][0] + v[0][k];
-        for (int i = 0; i < k; i++) {
-            if (v[k][i] + v[i][k] < minimo){
-                minimo = v[k][i] + v[i][k];
-            }
-        }
-        if (minimo < 0){
-            b = false;
-        }
-
-        for (int i = 0; i < k; i++){
-            for (int j = 0; j < k; j++) {
-                v[i][j] = min(v[i][j],v[i][k+1]+v[k+1][j]);
-            }
+    for (std::list<Eje>::iterator it = grafo.begin(); it != grafo.end(); it++) {
+        Eje &eje = *it;
+        int u = eje.origen;
+        int v = eje.destino;
+        int weight = eje.peso;
+        if (dist[u] != infinito && dist[u] + weight < dist[v]){
+            b = false; //Tiene ciclo negativo
         }
     }
     return b;
 }
 
-bool tiene_ciclos_negativos_Version2(vector< vector<int> > v, int n, int c){
-    int infinito = std::numeric_limits<int>::max();
-    for (int i = 0; i < n; i++){ //resta c a cada peaje
-        for (int j = 0; j < n; j++) {
-            if (i != j && v[i][j] != infinito) {
-                v[i][j] = v[i][j] - c;
-            }
-        }
-    }
-    //Algoritmo de Dantzing (solo detectar ciclo negativo?)
-    bool b = true;
-    for(int k = 0; k < n; k++){
-        int minimo = 0;
-        for (int i = 0; i < k; i++) {
-            if (v[k+1][i] + v[i][k+1] < minimo){
-                minimo = v[k+1][i] + v[i][k+1];
-            }
-        }
-        if (minimo < 0){
-            b = false;
-        }
-    }
-    return b;
-}
-
-int problema_dos(vector< vector<int> > v, int n, int c) {
+int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
     int j = c;
     int i = 0;
     bool b;
     int centro;
     while (i <= j) { //busqueda binaria
         centro = (j+i)/2;
-        b = tiene_ciclos_negativos(v,n,centro);
+        b = tiene_ciclos_negativos(grafo,n,m,centro);
         if (b == false) {
             j = centro - 1;
         } else {
@@ -102,23 +60,13 @@ int main(int argc, char** argv){
 	unsigned n, m;
 	stringTokenizer strTok;
 	string linea;
-    int infinito = std::numeric_limits<int>::max();
 	fstream input(argv[1], fstream::in);
 	while(getline(input, linea)){
 		if(linea == "-1 -1") continue;
 		strTok.tokenize(linea, ' ');
 		n = stoi(strTok[0]);
 		m = stoi(strTok[1]);
-		vector< vector<int> > v (n, vector<int>(n));
-		for(int i = 0; i < n; i++){ //O(n^2)
-            for (int j = 0; j < n; j++) {
-                if (i == j) {
-                    v[i][j] = 0;
-                } else {
-                    v[i][j] = infinito;
-                }
-            }
-		}
+		std::list<Eje> grafo;
 		int c = 0;
 		for(int i = 0; i < m; i++){
 			int c1, c2, p;
@@ -127,12 +75,12 @@ int main(int argc, char** argv){
 			c1 = stoi(strTok[0]);
 			c2 = stoi(strTok[1]);
 			p = stoi(strTok[2]);
-			v[c1][c2] = p;
-			if (p > c) {
-                c = p;
+			grafo.push_back({c1, c2, p});
+			if (p > c) { //buscar el mayor peaje
+                		c = p;
 			}
 		}
-		cout << problema_dos(v, n, c) << endl;
+		cout << problema_dos(grafo, n, m, c) << endl;
 	}
 	input.close();
 }

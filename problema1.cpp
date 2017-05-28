@@ -45,38 +45,42 @@ public:
 			_elementos[i] = _INF_;
 			_extraido[i] = false;			
 		}
-
 	}
 
 	void actualizarPrio(unsigned elemento, int prioridad){
 		_elementos[elemento] = prioridad;
+		_extraido[elemento] = false;
 	}
 
 	//pre: existe un mínimo
 	unsigned extraerMin(){
+
 		int min = _INF_;
 		unsigned indice;
+		bool a = false;
 		for(unsigned i = 0; i < _elementos.size(); i++){
 			int v = _elementos[i];
 			if(v != _INF_ && !_extraido[i]){
 				if(min == _INF_ || v < min){
 					min = v;
 					indice = i;	
+					a = true;
 				} 
 			}
 		}
 		_extraido[indice] = true;
 		_cantExtraidos++;
+
 		return indice;
 	}
 
 	bool empty(){
-		return _elementos.size() == _cantExtraidos;
+		return (_elementos.size() == _cantExtraidos);
 	}
 
 };
 
-int dist_camino_minimo_dijkstra(nodo n1, nodo n2, listaAdyacencia<vecino> grafo, unsigned k){
+int dist_camino_minimo_dijkstra(const nodo& n1, const nodo& n2, const listaAdyacencia<vecino>& grafo, unsigned k){
 
 	const int _INF_ = -1; //Infinito!
 	vector<int> distancia(grafo.cantNodos(), _INF_); 	//O(n)
@@ -88,9 +92,11 @@ int dist_camino_minimo_dijkstra(nodo n1, nodo n2, listaAdyacencia<vecino> grafo,
 	cola.actualizarPrio(origen, 0);
 	
 	while(!cola.empty()){
+		
 		unsigned p = cola.extraerMin();
+
 		for(vecino v : grafo.vecinos(p)){
-			unsigned q = idNodo(v.first, k);
+			unsigned q = idNodo(v.first, k); //REVISAR!!!
 			unsigned costo = v.second;
 			if(distancia[q] == _INF_ || distancia[q] > distancia[p] + costo){
 				distancia[q] = distancia[p] + costo;
