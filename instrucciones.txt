@@ -1,0 +1,18 @@
+problema1:
+
+compilar: make problema1
+correr:   ./problema1 grafo.txt   donde grafo.txt tiene el formato descripto en el tp
+
+problema2:
+
+compilar: make problema2
+correr:   
+
+
+problema3:
+
+compilar: make problema3
+correr:   
+
+
+
