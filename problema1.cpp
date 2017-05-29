@@ -83,8 +83,8 @@ public:
 int dist_camino_minimo_dijkstra(const nodo& n1, const nodo& n2, const listaAdyacencia<vecino>& grafo, unsigned k){
 
 	const int _INF_ = -1; //Infinito!
-	vector<int> distancia(grafo.cantNodos(), _INF_); 	//O(n)
-	colaPrioArray cola(grafo.cantNodos());				//O(n)
+	vector<int> distancia(grafo.cantNodos(), _INF_); 	//O(n*(k+1))
+	colaPrioArray cola(grafo.cantNodos());				//O(n*(k+1))
 
 	unsigned origen = idNodo(n1, k);
 	unsigned destino = idNodo(n2, k);
