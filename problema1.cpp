@@ -90,10 +90,12 @@ int dist_camino_minimo_dijkstra(const nodo& n1, const nodo& n2, const listaAdyac
 	unsigned destino = idNodo(n2, k);
 	distancia[origen] = 0;
 	cola.actualizarPrio(origen, 0);
-	
-	while(!cola.empty()){
+	bool destinoVisitado = false;
+
+	while(!cola.empty() && !destinoVisitado){
 		
 		unsigned p = cola.extraerMin();
+		destinoVisitado = (p == destino);
 
 		for(vecino v : grafo.vecinos(p)){
 			unsigned q = idNodo(v.first, k); //REVISAR!!!
