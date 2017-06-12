@@ -7,6 +7,7 @@
 #include "listaAdyacencia.hpp"
 #include "stringTokenizer.hpp"
 #include "Eje.h"
+#include "DisjointSet.h"
 
 using namespace std;
 
@@ -44,6 +45,22 @@ int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
     int i = 0;
     bool b;
     int centro;
+
+    // Genero grafo con centinela
+    int centinela = n;
+    DisjointSet g(n+1);
+    for (std::list<Eje>::const_iterator it = grafo.begin(); it != grafo.end() ; it++) {
+        g.unify(*it);
+    }
+
+    // Uno centinela al representante de cada componente conexa
+    std::list<DisjointSet::Subset*> sets = g.sets();
+    for (std::list<DisjointSet::Subset*>::const_iterator it = sets.begin(); it != sets.end() ; it++) {
+        DisjointSet::Subset* actual = *it;
+        grafo.push_back({actual->parent, n, c});
+        grafo.push_back({n, actual->parent, c});
+    }
+
     while (i <= j) { //busqueda binaria
         centro = (j+i)/2;
         b = tiene_ciclos_negativos(grafo,n,m,centro);

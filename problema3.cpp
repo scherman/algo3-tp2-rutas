@@ -10,6 +10,7 @@
 #include <iostream>
 #include "Eje.h"
 #include "GrafoListaIncidencias.h"
+#include "stringTokenizer.hpp"
 #include <random>
 #include <set>
 #include <sstream>
@@ -323,28 +324,40 @@ int main(int argc, char *argv[])
 {
     if (argc <= 1) throw std::invalid_argument( "No se ingreso nada!" );
 
-    std::vector<std::string> allArgs(argv, argv + argc);
-    int n = std::stoi(allArgs[1]);
-    std::list<Eje> rutasExistentes;
-    std::list<Eje> rutasNoExistentes;
-    for (int i = 2; i < allArgs.size() && allArgs[i] != "-1"; i = i + 4) {
-        int origen = stoi(allArgs[i]);
-        int destino = stoi(allArgs[i+1]);
-        bool existe = allArgs[i+2] == "1";
-        int precio = stoi(allArgs[i+3]);
+    unsigned n, m;
+    stringTokenizer strTok;
+    string linea;
+    fstream input(argv[1], fstream::in);
+    while(getline(input, linea)){
+        if(linea == "-1") continue;
+        strTok.tokenize(linea, ' ');
+        n = stoi(strTok[0]);
+        m = (n*(n-1))/2;
+        std::list<Eje> rutasExistentes;
+        std::list<Eje> rutasNoExistentes;
+        for(int i = 0; i < m; i++){
+            int origen, destino, precio, existe;
+            getline(input, linea);
+            strTok.tokenize(linea, ' ');
+            origen = stoi(strTok[0]);
+            destino = stoi(strTok[1]);
+            existe = stoi(strTok[2]);
+            precio = stoi(strTok[3]);
+            if (existe) rutasExistentes.push_back({origen, destino, precio});
+            else rutasNoExistentes.push_back({origen, destino, precio});
+        }
 
-        if (existe) rutasExistentes.push_back({origen, destino, precio});
-        else rutasNoExistentes.push_back({origen, destino, precio});
+        // Ejecucion
+        std::pair<std::list<Eje>, int> resultado = reconstruirRutas(n, rutasExistentes, rutasNoExistentes);
+        std::list<Eje> rutas = resultado.first;
+        int costo = resultado.second;
+        std::cout << costo << " " << rutas.size();
+        for (std::list<Eje>::iterator it = rutas.begin(); it != rutas.end(); it++) {
+            std::cout << " " << it->origen << " " << it->destino;
+        }
+        std::cout << std::endl;
     }
-
-    std::pair<std::list<Eje>, int> resultado = reconstruirRutas(n, rutasExistentes, rutasNoExistentes);
-    std::list<Eje> rutas = resultado.first;
-    int costo = resultado.second;
-    std::cout << costo << " " << rutas.size();
-    for (std::list<Eje>::iterator it = rutas.begin(); it != rutas.end(); it++) {
-        std::cout << " " << it->origen << " " << it->destino;
-    }
-    std::cout << std::endl;
+    input.close();
 }
 
 #endif //ALGO3_TP2_RUTAS_PROBLEMA3_H
