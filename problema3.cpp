@@ -322,6 +322,7 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
 
 int main(int argc, char *argv[])
 {
+
     if (argc <= 1) throw std::invalid_argument( "No se ingreso nada!" );
 
     unsigned n, m;
