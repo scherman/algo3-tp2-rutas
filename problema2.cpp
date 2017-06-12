@@ -68,22 +68,11 @@ void imprimirEjes(std::list<Eje> & ejes) {
 
 int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
 
-    // Genero grafo
-    DisjointSet g(n);
-    for (std::list<Eje>::const_iterator it = grafo.begin(); it != grafo.end() ; it++) {
-        g.unify(*it);
-    }
-
-    // Creo centinela y lo uno al representante de cada componente conexa
+    // Conecto componentes conexas con un grafo 'centinela'
     int centinela = n;
-    std::list<DisjointSet::Subset*> sets = g.sets();
-    for (std::list<DisjointSet::Subset*>::const_iterator it = sets.begin(); it != sets.end() ; it++) {
-        DisjointSet::Subset* actual = *it;
-        grafo.push_back({actual->parent, n, c});
-        grafo.push_back({n, actual->parent, c});
-        m = m + 2;
+    for (int k = 0; k < n; ++k) {
+        grafo.push_back({centinela, k, c});
     }
-    n++;
 
     int j = c;
     int i = 1;
