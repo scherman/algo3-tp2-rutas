@@ -11,18 +11,18 @@
 
 using namespace std;
 
-bool tiene_ciclos_negativos(std::list<Eje> grafo, int n, int m) {
-    int dist[n];
-    int infinito = std::numeric_limits<int>::max();
+bool tiene_ciclos_negativos(std::list<Eje> grafo, int n, int origen) {
 
     // Inicializar distancias en infinito
+    int dist[n];
+    int infinito = std::numeric_limits<int>::max();
     for (int i = 0; i < n; i++) {
         dist[i] = infinito;
     }
-    dist[0] = 0;
+    dist[origen] = 0;
 
     // Relajar todos los ejes n-1 veces
-    for (int i = 1; i <= n-1; i++) {
+    for (int i = 1; i < n; i++) {
         for (std::list<Eje>::iterator it = grafo.begin(); it != grafo.end(); it++) {
             Eje &eje = *it;
             int u = eje.origen;
@@ -68,7 +68,7 @@ void imprimirEjes(std::list<Eje> & ejes) {
 
 int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
 
-    // Conecto componentes conexas con un grafo 'centinela'
+    // Conecto componentes conexas con un nodo 'centinela'
     int centinela = n;
     for (int k = 0; k < n; ++k) {
         grafo.push_back({centinela, k, c});
@@ -76,15 +76,15 @@ int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
     }
     n++;
 
+    // Busco subsidio
     int j = c;
     int i = 1;
     int centro;
-
-    if (tiene_ciclos_negativos(grafo, n, m)) return 0;
+    if (tiene_ciclos_negativos(grafo, n, centinela)) return 0;
     while (i < j) {
         centro = (j+i)/2;
         aumentarSubsidio(grafo, centro);
-        if (tiene_ciclos_negativos(grafo,n,m)) {
+        if (tiene_ciclos_negativos(grafo,n,centinela)) {
             j = centro;
             disminuirSubsidio(grafo, centro);
         } else {
