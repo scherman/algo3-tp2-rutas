@@ -72,7 +72,9 @@ int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
     int centinela = n;
     for (int k = 0; k < n; ++k) {
         grafo.push_back({centinela, k, c});
+        m++;
     }
+    n++;
 
     int j = c;
     int i = 1;
