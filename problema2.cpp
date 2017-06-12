@@ -59,18 +59,23 @@ void disminuirSubsidio(std::list<Eje> &grafo, int valor) {
 }
 
 
-
+void imprimirEjes(std::list<Eje> & ejes) {
+    for (std::list<Eje>::iterator it = ejes.begin(); it != ejes.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
+}
 
 int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
 
     // Genero grafo
-    int centinela = n;
     DisjointSet g(n);
     for (std::list<Eje>::const_iterator it = grafo.begin(); it != grafo.end() ; it++) {
         g.unify(*it);
     }
 
-    // Uno centinela al representante de cada componente conexa
+    // Creo centinela y lo uno al representante de cada componente conexa
+    int centinela = n;
     std::list<DisjointSet::Subset*> sets = g.sets();
     for (std::list<DisjointSet::Subset*>::const_iterator it = sets.begin(); it != sets.end() ; it++) {
         DisjointSet::Subset* actual = *it;
@@ -78,16 +83,17 @@ int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
         grafo.push_back({n, actual->parent, c});
         m = m + 2;
     }
+    n++;
 
     int j = c;
     int i = 1;
     int centro;
 
-    if (tiene_ciclos_negativos(grafo, n+1, m)) return 0;
+    if (tiene_ciclos_negativos(grafo, n, m)) return 0;
     while (i < j) {
         centro = (j+i)/2;
         aumentarSubsidio(grafo, centro);
-        if (tiene_ciclos_negativos(grafo,n+1,m)) {
+        if (tiene_ciclos_negativos(grafo,n,m)) {
             j = centro;
             disminuirSubsidio(grafo, centro);
         } else {
