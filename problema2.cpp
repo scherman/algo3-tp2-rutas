@@ -77,21 +77,29 @@ int problema_dos(std::list<Eje> grafo, int n, int m, int c) {
     n++;
 
     // Busco subsidio
-    int j = c;
-    int i = 1;
-    int centro;
+    int j = c + 1;
+    int i = 0;
+    int subsidio, ultimoSubsidio;
     if (tiene_ciclos_negativos(grafo, n, centinela)) return 0;
-    while (i < j) {
-        centro = (j+i)/2;
-        aumentarSubsidio(grafo, centro);
+    while (i <= j) {
+        subsidio = (j+i)/2;
+
+        // Evito ciclo infinito en caso borde (C = 50, subsidio = 50)
+        if (subsidio == ultimoSubsidio) break;
+
+        // Intento subsidiar
+        aumentarSubsidio(grafo, subsidio);
         if (tiene_ciclos_negativos(grafo,n,centinela)) {
-            j = centro;
-            disminuirSubsidio(grafo, centro);
+            j = subsidio;
         } else {
-            i = centro;
+            i = subsidio;
         }
+        // Vuelvo al subsidio de antes
+        disminuirSubsidio(grafo, subsidio);
+
+        ultimoSubsidio = subsidio;
     }
-    return centro;
+    return subsidio;
 }
 
 //#include "problema3.cpp"
