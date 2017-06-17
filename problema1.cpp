@@ -21,6 +21,11 @@ inline unsigned idNodo(nodo n, unsigned k){
 	return (n.first*p + n.second);
 }
 
+inline nodo nodoFromId(unsigned id, unsigned k){
+	unsigned k0 = (k != 0) ? (k+1) : 1;
+	unsigned p  = (k != 0) ? (id % k0) : 0;
+	return make_nodo((int)(id / k0), p);
+}
 
 //Cola de prioridad para el algo de dijkstra.
 //Matiene hasta cantElementos elementos y a partir de ahí decrece. Todos los elementos son inicializados con prioridad infinita. 
@@ -49,7 +54,6 @@ public:
 
 	void actualizarPrio(unsigned elemento, int prioridad){
 		_elementos[elemento] = prioridad;
-		_extraido[elemento] = false;
 	}
 
 	//pre: existe un mínimo
@@ -92,13 +96,16 @@ int dist_camino_minimo_dijkstra(const nodo& n1, const nodo& n2, const listaAdyac
 	cola.actualizarPrio(origen, 0);
 	bool destinoVisitado = false;
 
-	while(!cola.empty() && !destinoVisitado){
+	while(!cola.empty()){
 		
 		unsigned p = cola.extraerMin();
-		destinoVisitado = (p == destino);
-
+		nodo n = nodoFromId(p, k);
+		if(n.first == n2.first){
+			cout << "corte\n";
+			return distancia[p];
+		}
 		for(vecino v : grafo.vecinos(p)){
-			unsigned q = idNodo(v.first, k); //REVISAR!!!
+			unsigned q = idNodo(v.first, k); 
 			unsigned costo = v.second;
 			if(distancia[q] == _INF_ || distancia[q] > distancia[p] + costo){
 				distancia[q] = distancia[p] + costo;
@@ -111,43 +118,30 @@ int dist_camino_minimo_dijkstra(const nodo& n1, const nodo& n2, const listaAdyac
 
 }
 
-int resolver(int* grafoOriginal, unsigned n, unsigned origen, unsigned destino, unsigned k){
-
-	int (*G)[n] = (int (*)[n]) grafoOriginal;
+int resolver(const listaAdyacencia<pair<unsigned, int>>& grafoEntrada, unsigned n, unsigned origen, unsigned destino, unsigned k){
 
 	listaAdyacencia<vecino> grafo(n*(k+1), false);
-	
-	for(unsigned i = 0; i < n*(k+1); i++){ //O(n*(k+1)) iteraciones
-		
-		unsigned c1 = (unsigned)(i / (k + 1));
-		unsigned p1 = i % (k+1);
-		for(unsigned j = 0; j < n*(k+1); j++){ //O(n*(k+1)) iteraciones
-						
-			unsigned c2 = (unsigned)(j / (k + 1));
-			unsigned p2 = j % (k+1);
 
-
-			if(c1 == c2 && p1 < p2){
-				//Dados i, j (i < j), y una ciudad c,  si se puede llegar a c usando a lo sumo i rutas premium,
-				//entonces también se puede llegar a c usando a lo sumo j rutas premium
-				grafo.agregarVecino(i, make_vecino(make_nodo(c2, p2), 0)); 
-			}
-			else{
-				int distancia = G[c1][c2];
-				if (distancia == 0) continue; //si las ciudades no estan conectadas, nada que hacer
-				bool esRutaPremium = (distancia < 0);
-
-				if((p2 == (p1 + 1) && esRutaPremium) || (p1 == p2 && !esRutaPremium)){ //<- ya sabemos que las ciudades están conectadas!
-					grafo.agregarVecino(i, make_vecino(make_nodo(c2, p2), abs(distancia)));
+	for(unsigned i = 0; i < grafoEntrada.cantNodos(); i++){
+		for(auto v : grafoEntrada.vecinos(i)){
+			bool esRutaPremium = (v.second < 0);
+			for(unsigned p = 0; p <= k; p++){
+				auto id = idNodo(make_nodo(i, p), k);
+				if(esRutaPremium && p!=k){
+					nodo nodoVecino = make_nodo(v.first, p+1);
+					grafo.agregarVecino(id, make_vecino(nodoVecino, abs(v.second)));
 				}
-
+				else if(!esRutaPremium){
+					nodo nodoVecino = make_nodo(v.first, p);
+					grafo.agregarVecino(id, make_vecino(nodoVecino, abs(v.second)));
+				}
 			}
 		}
 	}
-	
+
 	//El nodo (origen, 0)  se corresponde con la ciudad de origen, sin haber usando ninguna ruta premium
 	//El nodo (destino, k) se corresponde con la ciudad de destino, habiendo usado a lo sumo k rutas premium.
-	return dist_camino_minimo_dijkstra(make_nodo(0, 0), make_nodo(n-1, k), grafo, k);
+	return dist_camino_minimo_dijkstra(make_nodo(origen, 0), make_nodo(destino, k), grafo, k);
 }
 
 int main(int argc, char** argv){
@@ -165,15 +159,13 @@ int main(int argc, char** argv){
 		n = stoi(strTok[0]);
 		m = stoi(strTok[1]);
 
-		int* grafo = new int[n*n];
-		for(int i = 0; i < n*n; i++)//O(n^2)
-			grafo[i] = 0;
+		listaAdyacencia<pair<unsigned, int>> grafo(n, false);
 
 		//segunda linea del archivo (origen, destino, k)
 		getline(input, linea);
 		strTok.tokenize(linea, ' ');
-		origen = stoi(strTok[0]);
-		destino = stoi(strTok[1]);
+		origen = stoi(strTok[0]) - 1;
+		destino = stoi(strTok[1]) - 1;
 		k = stoi(strTok[2]);
 
 		for(int i = 0; i < m; i++){
@@ -190,12 +182,11 @@ int main(int argc, char** argv){
 
 			//Representación: distancia negativa es ruta premium, distancia positiva es ruta normal. 
 			//Es un grafo normal, por lo tanto la matriz es simétrica.
-			grafo[(c1-1)*n + (c2-1)] = d*pow(-1, p); 
-			grafo[(c2-1)*n + (c1-1)] = d*pow(-1, p); 
+			grafo.agregarVecino(c1-1, make_pair(c2-1, d*pow(-1, p))); 
+			grafo.agregarVecino(c2-1, make_pair(c1-1, d*pow(-1, p))); 
 		}
 
-		cout << resolver(grafo, n, origen - 1, destino - 1, k) << endl; //En el grafo las ciudades se indexaron en el rango [0, n)
-		delete[] grafo;
+		cout << resolver(grafo, n, origen, destino, k) << endl; //En el grafo las ciudades se indexaron en el rango [0, n)
 	}	
 	input.close();
 	return 0;
