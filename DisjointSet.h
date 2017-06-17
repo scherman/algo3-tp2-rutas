@@ -61,8 +61,13 @@ public:
     }
 
     Subset & find(int v) const {
-        if (subsets[v]->parent == v) return *subsets[v];
-        else find(subsets[v]->parent);
+        if (subsets[v]->parent != v) {
+            Subset &subset = find(subsets[v]->parent);
+            subsets[v]->parent = subset.parent;
+            return subset;
+        } else {
+            return *subsets[v];
+        }
     }
 
     void unify(const Eje & eje) {

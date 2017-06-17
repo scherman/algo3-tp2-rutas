@@ -1,0 +1,26 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Delivery Optimo}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Introducci\IeC {\'o}n al problema}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Representaci\'{o}n}{3}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}El algoritmo}{4}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}Complejidad}{5}{subsection.1.4}
+\contentsline {subsection}{\numberline {1.5}Correctitud}{5}{subsection.1.5}
+\contentsline {subsection}{\numberline {1.6}Experimentaci\'{o}n}{5}{subsection.1.6}
+\contentsline {subsubsection}{\numberline {1.6.1}Mediciones de complejidad}{5}{subsubsection.1.6.1}
+\contentsline {paragraph}{\numberline {1.6.1.1}Complejidad sobre $n$}{6}{paragraph.1.6.1.1}
+\contentsline {paragraph}{\numberline {1.6.1.2}Complejidad sobre $k$}{6}{paragraph.1.6.1.2}
+\contentsline {paragraph}{\numberline {1.6.1.3}Complejidad sobre $m'$}{6}{paragraph.1.6.1.3}
+\contentsline {section}{\numberline {2}Subsidiando el transporte}{7}{section.2}
+\contentsline {subsection}{\numberline {2.1}Representaci\'{o}n}{7}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Resoluci\'{o}n}{7}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Implementaci\'{o}n}{7}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Complejidad}{8}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Correctitud}{9}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.6}Experimentaci\'{o}n}{9}{subsection.2.6}
+\contentsline {section}{\numberline {3}Reconfiguracion de Rutas}{12}{section.3}
+\contentsline {subsection}{\numberline {3.1}Representaci\'{o}n}{12}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Resoluci\'{o}n}{12}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Implementaci\'{o}n}{12}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Complejidad}{14}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Correctitud}{15}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}Experimentaci\'{o}n}{16}{subsection.3.6}

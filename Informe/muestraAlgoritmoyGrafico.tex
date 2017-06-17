@@ -1,0 +1,59 @@
+
+\section{Backtracking}
+\begin{subsection}{Implementaci\'{o}n}
+
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+    \Function{BTPintar}{A, n, i, r, a}
+      \If{i = 0} \Comment{Caso base} 
+        \State \textbf{return} $0$
+      \Else
+      	\State ultimoElem $\gets$ A[i-1]
+        \State minRamaR, minRamaA, minRamaSP$\gets$ n
+		\If{$r = 0$ $\vee$ ultimoElem $<$ A[r-1]}
+        	\State minRamaR $\gets$ BTPintar(A, n, i-1, i, a) \Comment{Pinto de rojo}
+        \EndIf 
+		\If{$a = 0$ $\vee$ ultimoElem $>$ A[a-1]}
+        	\State minRamaA $\gets$ BTPintar(A, n, i-1, r, i) \Comment{Pinto de azul}
+        \EndIf 
+        \State minRamaSP $\gets$ BTPintar(A, n, i-1, r, a) + 1 \Comment{No lo pinto}
+        \State \textbf{return} min(minRamaR, minRamaA, minRamaSP)
+      \EndIf 
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+
+\end{subsection}
+
+\vspace{1cm}
+\pgfplotstableread[col sep=comma]{tiempos-bt.csv}{\table}
+\begin{tikzpicture}
+\begin{axis}[
+  xlabel=Longitud ($n$),
+  ylabel= $\log \text{Tiempo}(A)$ ($ms$),
+  ymode = log ]
+\addplot+[thin] table[x = length, y expr={\thisrow{ns_distribucion_uniforme}/1000}, col sep=comma]{\table};
+\addlegendentry{A rnd.}
+\addplot+[thin] table[x = length, y expr={\thisrow{ns_creciente}/1000}, col sep=comma]{\table};
+\addlegendentry{A crec.}
+\addplot+[thin] table[x = length, y expr={\thisrow{ns_decreciente}/(1000}, col sep=comma]{\table};
+\addlegendentry{A decrec.}
+\addplot+[thin] table[x = length, y expr={\thisrow{ns_constante}/1000}, col sep=comma]{\table};
+\addlegendentry{A const.}
+`\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[
+  xlabel=Longitud ($n$),
+  ylabel= $\frac{\text{Tiempo}(A)}{3^n}$ ($ms$)
+  ]
+\addplot+[thin] table[x = length, y expr={\thisrow{ns_distribucion_uniforme}/(1000*3^\thisrow{length})}, col sep=comma]{\table};
+\addlegendentry{A rnd.}
+\addplot+[thin] table[x = length, y expr={\thisrow{ns_creciente}/(1000*3^\thisrow{length}}, col sep=comma]{\table};
+\addlegendentry{A crec.}
+\addplot+[thin] table[x = length, y expr={\thisrow{ns_decreciente}/(1000*3^\thisrow{length}}, col sep=comma]{\table};
+\addlegendentry{A decrec.}
+\addplot+[thin] table[x = length, y expr={\thisrow{ns_constante}/(1000*3^\thisrow{length}}, col sep=comma]{\table};
+\addlegendentry{A const.}
+`\end{axis}
+\end{tikzpicture}
