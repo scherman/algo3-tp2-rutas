@@ -100,10 +100,8 @@ int dist_camino_minimo_dijkstra(const nodo& n1, const nodo& n2, const listaAdyac
 		
 		unsigned p = cola.extraerMin();
 		nodo n = nodoFromId(p, k);
-		if(n.first == n2.first){
-			cout << "corte\n";
-			return distancia[p];
-		}
+		if(n.first == n2.first) return distancia[p];
+		
 		for(vecino v : grafo.vecinos(p)){
 			unsigned q = idNodo(v.first, k); 
 			unsigned costo = v.second;
