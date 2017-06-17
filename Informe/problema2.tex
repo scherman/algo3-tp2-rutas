@@ -1,0 +1,153 @@
+
+\begin{subsection}{Representaci\'{o}n}
+Representaremos este problema con un grafo $G$ que cumpla lo siguiente:
+\begin{itemize}
+	\item{$G$ es un grafo orientado: Nos dicen que las rutas son de mano \'{u}nica por lo que representaremos estas rutas como aristas orientadas.}
+    \item{$V = \{v \in \mathbb{N}_0 : v < n \}$: Esto es, los v\'{e}rtices de $G$ ser\'{a}n n\'{u}meros, en donde cada uno de ellos representa cada una de las $n$ ciudades del problema.}
+    \item{$E = \{(v_1, v_2) \in V^2 : \text{$\exists$ ruta que va de $v_1$ a $v_2$}  \}$: De esta forma, los ejes de $G$ representar\'{a}n las rutas del problema.}
+    \item{$p:E \rightarrow \mathbb{Z}$: Representaremos los precios de los peajes como pesos en los ejes (si son positivos, ser\'{a}n la suma que se cobra al cliente. Si son negativos, la suma que se le paga). Para ello, la funci\'{o}n $p$ asignar\'{a} enteros a cada uno de estos. Notar que nos dicen que hay un peaje por cada ruta por lo que $dom(p)=E$ ya que cada peaje debe tener un costo.  }
+    \item{$\forall v \in V, {d_{out}}(v) \geq 1$ (no existen ciudades aisladas)}
+
+\end{itemize}
+Entonces, $G$ ser\'{a} el modelo que representa a la ciudad de nuestro problema. Puntualmente, lo que queremos es encontrar el m\'{a}ximo $s$ tq si consideramos $p'(e) = p(e) - s$ $(\forall e \in E)$ en lugar de $p$, entonces no se forman ciclos negativos, es decir, que la suma de los pesos de sus ejes no sea menor a 0. \\ \\ 
+Para constru\'{i}r $G$ a partir de la entrada, lo que haremos ser\'{a} ir agregando eje por eje, que va a tomar $O(m)$. Representaremos as\'{i} a $G$ como una lista de incidencias.
+\end{subsection}
+
+
+\begin{subsection}{Resoluci\'{o}n}
+La idea para la resoluci\'{o}n del problema va a ser la siguiente:
+\begin{enumerate}
+	\item{Unir un v\'{e}rtice \textit{centinela} a cada uno de los nodos: En el siguiente punto vamos a necesitar usar el algoritmo de \textit{Bellman-Ford} en $G$. Como no sabemos si $G$ es fuertemente conexo o no,  agregamos este centinela que alcance a todos los $v \in V$, para luego correr el algoritmo tomando al centinela como origen.}
+    \item{Variar subsidio $0 \leq s \leq C$ binariamente hasta encontrar el m\'{a}ximo:  
+    \begin{itemize}
+    	\item{Se va a ir probando con subsidios que van a variar como en una b\'{u}squeda binaria tradicional. La diferencia es que, en cada iteraci\'{o}n, se va a fijar si tal subsidio genera alg\'{u}n ciclo negativo en lugar de verificar si el elemento actual es el buscado.}
+    	\item{Para encontrar ciclos negativos, se utiliza el algoritmo de \textit{Bellman-Ford}, tomando como origen al centinela agregado en el paso 1 que, como alcanza a todos los v\'{e}rtices de $G$, nos asegura que encuentra todos los ciclos negativos en caso que los hubiera.}
+        \end{itemize}
+        }
+\end{enumerate}
+De esta forma, una vez que tengamos maximizado el s del paso 2, sabremos que ese es el valor m\'{a}ximo para el cual no se generan ciclos negativos que, en terminos del problema, corresponde al m\'{a}ximo subsidio que se puede aplicar tal que no genere aprovechamientos, lo cual es la soluci\'{o}n \'{o}ptima al problema que pretendemos resolver.  
+\end{subsection}
+
+\begin{subsection}{Implementaci\'{o}n}
+Para la implementaci\'{o}n del algoritmo, vamos a usar la funci\'{o}n \textit{hayCicloNegativo?} que, mediante el algoritmo de \textit{Bellman-Ford}, detecta si hay ciclos negativos en el grafo. Para ello, le pasamos como par\'{a}metro el grafo con sus dimensiones y el nodo origen, que  en este caso ser\'{a} el centinela puesto que es el \'{u}nico v\'{e}rtice para el cual podemos asegurar que est\'{a} conectado a todos los nodos del grafo y as\'{i} no se va a perder ning\'{u}n ciclo negativo en caso que los haya. \\
+Adem\'{a}s, usaremos las funci\'{o}n \textit{aumentarSubsidio} que recibe las rutas y una constante por par\'{a}metro y, entonces,  para cada ruta, le resta la constante a su peso. De forma similar tendremos la funci\'{o}n \textit{disminu\'{i}rSubsidio} que, en lugar de restar la constante para cada ruta, la suma. 
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+    \Function{maximoSubsidio}{rutas, n, m, C}
+    \State centinela $\gets$ n
+    \For{i=1 to n} \Comment{Unir centinela a todos los nodos}
+    	\State e $\gets$ Eje(centinela, n, C)
+    	\State rutas.push(e)
+        \State m++
+    \EndFor
+    \State n++
+	\State j $\leftarrow$ C
+    \State i $\leftarrow$ 0
+    \State s, sAnterior $\leftarrow$ 0
+    \While{i $<$ j}\Comment{Mover binariamente $s$}
+    \State s $\leftarrow \floor{\frac{j+i}{2}}$ 
+    \IIf{s = sAnterior} \textbf{return} s \EndIIf \Comment{Evita ciclo infinito en caso borde}
+    \State aumentarSubsidio(rutas, s)
+     \If{hayCicloNegativo?(rutas, n, m, centinela)}
+     \State{j $\leftarrow$ s}
+     \Else
+     \State i $\leftarrow$ s
+     \EndIf
+    \State disminu\'{i}rSubsidio(rutas, s)
+    \State sAnterior = s
+    \EndWhile
+    \State \textbf{return} s
+    \EndFunction    
+  \end{algorithmic}
+\end{algorithm}
+\end{subsection}
+
+
+\begin{subsection}{Complejidad}
+En el primer ciclo (L3-7) se ejecuta n veces operaciones que son $O(1)$ por lo que la complejidad de \'{e}ste resulta $\Theta(n)O(1)$ que, en particular, es $O(n)O(1)=O(n)$\\ \\
+En el segundo ciclo (L12-23), estamos moviendo al s como en una b\'{u}squeda binaria, en donde $0 \leq s \leq C$. En este caso, a diferencia de la b\'{u}squeda binaria, se va a tomar $\Theta(log(C))$ (que es $O(log(c))$) en todos lo casos puesto que buscamos maximizar $C$ hasta no poder m\'{a}s, a diferencia de la otra que termina cuando encuentra el elemento en un buen caso. 
+Adem\'{a}s, como mencionamos anteriormente, la funci\'{o}n \textit{hayCicloNegativo?} ejecuta el algoritmo de $Bellman-Ford$, que toma $O(nm)$, junto a las operaciones \textit{aumentarSubsidio} y \textit{disminu\'{i}rSubsidio} que toman $O(m)$ puesto que recorren todas las aristas, junto a otras operaciones que toman $O(1)$. Por lo que la complejidad de este ciclo resulta $O(log(C)(nm+m))=O(log(C)nm+log(C)m)=O(log(C)nm)$ dado que $nm \geq m (n\in \mathbb{N})$ \\ \\
+Finalmente, falta sumar O(1) por algunas otras operaciones que se realizan como asignaciones, incrementaciones y dem\'{a}s, por lo que la complejidad final resulta entonces  $O(m+log(c)nm)O(1)=O(nmlog(c))$ en todos los casos. \\ \\
+En cuanto a la complejidad espacial, el algoritmo utiliza la lista de ejes ($O(m)$) sumado la complejidad espacial que necesita \textit{Bellman-Ford}, que es $O(n)$ (necesita una arreglo de distancias de cada nodo al origen). Entonces, la complejidad espacial final resulta $O(m+n)$
+\end{subsection}
+
+\begin{subsection}{Correctitud}
+Sea s el subsidio m\'{a}ximo de $G$ obtenido mediante el algoritmo. Veamos que:
+\begin{enumerate}[label=(\roman*)]
+	\item{$0 \leq s \leq C$}
+    \item{s es la soluci\'{o}n \'{o}ptima}
+\end{enumerate}
+
+\underline{dem:}(i) Sea $s'$ una soluci\'{o}n del problema cualquiera. Por hip\'{o}tesis del enunciado, sabemos que ${d_{out}}(v)\geq 1 (\forall v \in V) \Rightarrow \exists P \text{ ciclo en } G$. 
+Tenemos por un lado que $s' \geq 0$, ya que si no fuera as\'{i}, $s'$ no ser\'{i}a un subsidio sino un impuesto. Por otro lado, $s' \leq C$, porque sino $s'>C 
+\Rightarrow p(v) \leq C < s' (\forall v \in P) \Rightarrow p(v) - s' < 0 (\forall v \in P) \Rightarrow $ P es un ciclo negativo, que es absurdo, por lo que debe ser entonces que $s' \leq C$. \\
+Por lo tanto, debe ser que $0 \leq s' \leq C$. Ahora, en el algoritmo, $s$ var\'{i}a 'binariamente' entre exactamente ese rango, por lo que por correctitud de la busqueda binaria debe valer esta propiedad.
+
+\underline{dem:}(ii) Supongamos que existe otra soluci\'{o}n $s'$ tq $s'<s$. Debe ser entonces que se evalu\'{o} incorrectamente la soluci\'{o}n $s=s'$: Esto es, se detecto un ciclo negativo cuando no lo hab\'{i}a, lo cual sucede si el algoritmo de \textit{Bellman-Ford} detecta tal cosa. Ahora, que $s'$ haya sido invalidada implica que  la respuesta de $Bellman-Ford$ sea incorrecta, pero dado que
+  \begin{itemize}
+  	\item{Se tom\'{o} como origen al \textit{centinela} que agregamos y que alcanza a todos los nodos de $G$}
+      \item{Agregar el centinela no agreg\'{o} ning\'{u}n ciclo (pues ningun v\'{e}rtice incide sobre centinela)}
+  \end{itemize}
+por correctitud de $Bellman-Ford$ sabemos que esto no puede suceder. Por lo cual, es absurdo que exista tal soluci\'{o}n $s'$, lo cual implica que $s$ sea la \'{o}ptima.
+\end{subsection}
+
+\begin{subsection}{Experimentaci\'{o}n}
+El objetivo de esta experimentaci\'{o}n fue de conclu\'{i}r que la complejidad te\'{o}rica calculada se condice con los tiempos de ejecuci\'{o}n del algoritmo. \'{E}ste, seg\'{u}n el an\'{a}lisis realizado, depende de tres variables: $n, m \text{ y } c$. Por lo cual, la idea de la experimentaci\'{o}n fue fijar de a pares y variar el tercero para determinar la influencia de esta variable en los tiempos a medida que aumenta. Para cada valor de la variable de cada experimento, se tom\'{o} el promedio del tiempo de ejecuci\'{o}n de 5 instancias de test.  \\ \\
+Para generar las instancias de test, se siguieron los siguientes pasos: dados $n, m, cotaSupC$
+\begin{enumerate}
+  \item{Para todo v\'{e}rtice $v$, se cre\'{o} una ruta hacia otro v\'{e}rtice $v'$ elegido de forma aleatoria (para satisfacer la hip\'{o}tesis de que no haya ciudades aisladas). Para determinar su peso, se eligi\'{o} tambi\'{e}n de forma aleatoria tal que el resultado sea menor o igual a $cotaSupC$}
+    \item{Mientras se tenga que seguir agregando rutas, seguir construyéndolas de forma aleatoria.}
+\end{enumerate}
+Los par\'{a}metros dependen del experimento realizado que se proceder\'{a} a detallar en el experimento correspondiente. \\ \\ 
+Para el primer experimento, queremos ver como var\'{i}a $n$ a medida que crece. Para el experimento, se fij\'{o} $C=5000$ y $m=n$ (la cantidad de rutas m\'{i}nima para satisfacer la hip\'{o}tesis). Ten\'{i}amos que la complejidad te\'{o}rica era era $O(nmlog(C)) \Rightarrow O(n^2log(C))$, por lo que se espera que los tiempos crezcan de forma cuadr\'{a}tica. Entonces, tomando al eje $x=nm=n^2$, se espera que la curva sea lineal. Veamos los resultados obtenidos: 
+
+\pgfplotstableread[col sep=comma]{tiempos-ej2-variando-n.csv}{\table}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  only marks,
+  xlabel= $n^2$,
+  ylabel= $\text{Tiempo}(ns)$]
+\addplot+[thin,mark size=1pt] table[x expr = {\thisrow{n}^2}, y = tiempoTotal, col sep=comma]{\table};
+\addlegendentry{variaci\'{o}n $n$}
+`\end{axis}
+\end{tikzpicture}
+\end{figure}
+
+Efectivamente, se puede ver que los resultados obtenidos fueron los esperados. \\ \\
+Para el siguiente experimento, se quiere ver como var\'{i}a $m$. Para ello, se fij\'{o} $C=5000, n=50$. Esperamos que este factor crezca de forma lineal acorde a la complejidad te\'{o}rica. Los resultados son:
+
+\pgfplotstableread[col sep=comma]{tiempos-ej2-variando-m.csv}{\table}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  only marks,
+  xlabel= $m$,
+  ylabel= $\text{Tiempo}(ns)$]
+\addplot+[thin,mark size=1pt] table[x expr = {\thisrow{m}}, y = tiempoTotal, col sep=comma]{\table};
+\addlegendentry{variaci\'{o}n $m$}
+`\end{axis}
+\end{tikzpicture}
+\end{figure}
+
+Observamos que, de nuevo, $m$ var\'{i}a linealmente como esper\'{a}bamos. Veamos como var\'{i}a $C$ en nuestro \'{u}ltimo experimento. Fijamos $n=200, m=300$. Esperamos que tenga un comportamiento logar\'{i}tmico. Los resultados: 
+
+\pgfplotstableread[col sep=comma]{tiempos-ej2-variando-c.csv}{\table}
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  only marks,
+  xlabel= $c$,
+  ylabel= $\text{Tiempo}(ns)$]
+\addplot+[thin,mark size=1pt] table[x = c, y expr = {\thisrow{tiempoTotal}}, col sep=comma]{\table};
+\addlegendentry{variaci\'{o}n $c$}
+`\end{axis}
+\end{tikzpicture}
+\end{figure}
+
+Podemos conclu\'{i}r que $C$ se comporta efectivamente de forma logar\'{i}tmica. De todas formas, se esperaba un gr\'{a}fico m\'{a}s regular para valores relativamente grandes dado que siempre se toma $log(C)$. En particular, se esperaba que todo valor $log(512) \leq x < log(1024)$ tome un tiempo similar.
+
+\end{subsection}

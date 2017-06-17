@@ -141,7 +141,6 @@ std::pair<std::list<Eje>, long> reconstruirRutas(int n, std::list<Eje> & rutasEx
 
 // Devuelve matriz de adyacencia y de incidencias
 std::pair<std::list<Eje>, int**> generarGrafo(int n, int m, bool conexo) {
-//    std::cout << "n = " << n << ", m = " << m << " < " << (n*(n-1))/2 << std::endl;
     if (m > (n*(n-1))/2) throw std::invalid_argument( "No puede tener tantos ejes!");
     if (conexo && m < n - 1) throw std::invalid_argument( "No puede ser conexo porque m < n - 1");
 
@@ -214,22 +213,22 @@ std::list<Eje> rutasComplemento(int n, const std::list<Eje> &rutasExistentes, in
     return rutasNoExistentes;
 }
 
-void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
+void escribirTiemposEj3(int minN, int maxN, int cantSalto, int cantInstanciasPorN) {
     std::string nombreArchivo = "tiempos-ej3";
 
     std::stringstream ss;
     ss <<  "/home/jscherman/CLionProjects/algo3-tp2-rutas/datos/" << nombreArchivo << ".csv";
     std::ofstream a_file (ss.str());
 
-    a_file << "cant_ejes, ns_rutas_completas, ns_rutas_vacias, ns_rutas_esparso_conexo, ns_rutas_esparso_disconexo, ns_rutas_denso_conexo, ns_rutas_denso, disconexo" << std::endl;
+    a_file << "cant_ejes, ns_rutas_completas, ns_rutas_vacias, ns_rutas_esparso_conexo, ns_rutas_esparso_disconexo, ns_rutas_denso_conexo, ns_rutas_denso_disconexo" << std::endl;
 
-    for (int i = 3; i < maxN; ++i) {
-        int tiempoTotalRutasCompletas = 0;
-        int tiempoTotalRutasVacias = 0;
-        int tiempoTotalRutasEsparsoConexo = 0;
-        int tiempoTotalRutasEsparsoDisconexo = 0;
-        int tiempoTotalRutasDensoConexo = 0;
-        int tiempoTotalRutasDensoDisconexo = 0;
+    for (int i = minN; i < maxN; i += cantSalto) {
+        long long tiempoTotalRutasCompletas = 0;
+        long long tiempoTotalRutasVacias = 0;
+        long long tiempoTotalRutasEsparsoConexo = 0;
+        long long tiempoTotalRutasEsparsoDisconexo = 0;
+        long long tiempoTotalRutasDensoConexo = 0;
+        long long tiempoTotalRutasDensoDisconexo = 0;
         for (int j = 0; j < cantInstanciasPorN; ++j) {
             {
                 // Test rutas completas
@@ -242,6 +241,12 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
                 auto tpf = std::chrono::high_resolution_clock::now();
                 auto tiempoRutasCompletas = std::chrono::duration_cast<std::chrono::nanoseconds>(tpf-tpi).count();
                 tiempoTotalRutasCompletas += tiempoRutasCompletas;
+
+                // Borro matriz de adyacencias
+                for (int k = 0; k < i; ++k) {
+                    delete grafo.second[k];
+                }
+                delete[] grafo.second;
             }
             {
                 // Test rutas vacias
@@ -254,6 +259,12 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
                 auto tpf = std::chrono::high_resolution_clock::now();
                 auto tiempoRutasVacias = std::chrono::duration_cast<std::chrono::nanoseconds>(tpf-tpi).count();
                 tiempoTotalRutasVacias += tiempoRutasVacias;
+
+                // Borro matriz de adyacencias
+                for (int k = 0; k < i; ++k) {
+                    delete grafo.second[k];
+                }
+                delete[] grafo.second;
             }
             {
                 // Test rutas esparso conexo
@@ -266,6 +277,12 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
                 auto tp1f = std::chrono::high_resolution_clock::now();
                 auto tiempoRutasEsparsoConexo = std::chrono::duration_cast<std::chrono::nanoseconds>(tp1f-tp1i).count();
                 tiempoTotalRutasEsparsoConexo += tiempoRutasEsparsoConexo;
+
+                // Borro matriz de adyacencias
+                for (int k = 0; k < i; ++k) {
+                    delete grafo.second[k];
+                }
+                delete[] grafo.second;
             }
             {
                 // Test rutas esparso disconexo
@@ -278,6 +295,12 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
                 auto tp1f = std::chrono::high_resolution_clock::now();
                 auto tiempoRutasEsparsoDisconexo = std::chrono::duration_cast<std::chrono::nanoseconds>(tp1f-tp1i).count();
                 tiempoTotalRutasEsparsoDisconexo += tiempoRutasEsparsoDisconexo;
+
+                // Borro matriz de adyacencias
+                for (int k = 0; k < i; ++k) {
+                    delete grafo.second[k];
+                }
+                delete[] grafo.second;
             }
             {
                 // Test rutas denso conexo
@@ -290,6 +313,12 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
                 auto tp1f = std::chrono::high_resolution_clock::now();
                 auto tiempoRutasDensoConexo = std::chrono::duration_cast<std::chrono::nanoseconds>(tp1f-tp1i).count();
                 tiempoTotalRutasDensoConexo += tiempoRutasDensoConexo;
+
+                // Borro matriz de adyacencias
+                for (int k = 0; k < i; ++k) {
+                    delete grafo.second[k];
+                }
+                delete[] grafo.second;
             }
             {
                 // Test rutas denso disconexo
@@ -302,6 +331,12 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
                 auto tp1f = std::chrono::high_resolution_clock::now();
                 auto tiempoRutasDensoDisconexo = std::chrono::duration_cast<std::chrono::nanoseconds>(tp1f-tp1i).count();
                 tiempoTotalRutasDensoDisconexo += tiempoRutasDensoDisconexo;
+
+                // Borro matriz de adyacencias
+                for (int k = 0; k < i; ++k) {
+                    delete grafo.second[k];
+                }
+                delete[] grafo.second;
             }
         }
 
@@ -312,7 +347,7 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
         tiempoTotalRutasDensoConexo = tiempoTotalRutasDensoConexo / cantInstanciasPorN;
         tiempoTotalRutasDensoDisconexo = tiempoTotalRutasDensoDisconexo / cantInstanciasPorN;
         std::cout << i << ", " << tiempoTotalRutasCompletas << ", " << tiempoTotalRutasVacias<< ", " << tiempoTotalRutasEsparsoConexo<< ", " << tiempoTotalRutasEsparsoDisconexo << ", " << tiempoTotalRutasDensoConexo << ", " << tiempoTotalRutasDensoDisconexo << std::endl ;
-        a_file << i << ", " << tiempoTotalRutasCompletas << ", " << tiempoTotalRutasVacias<< ", " << tiempoTotalRutasEsparsoConexo<< ", " << tiempoTotalRutasEsparsoDisconexo << tiempoTotalRutasDensoConexo << ", " << tiempoTotalRutasDensoDisconexo << std::endl ;
+        a_file << i << ", " << tiempoTotalRutasCompletas << ", " << tiempoTotalRutasVacias<< ", " << tiempoTotalRutasEsparsoConexo<< ", " << tiempoTotalRutasEsparsoDisconexo << ", " << tiempoTotalRutasDensoConexo << ", " << tiempoTotalRutasDensoDisconexo << std::endl ;
     }
 
     a_file.close();
@@ -322,7 +357,7 @@ void escribirTiemposEj3(int maxN, int cantInstanciasPorN) {
 
 int main(int argc, char *argv[])
 {
-
+//    escribirTiemposEj3(3, 10000, 1, 3);
     unsigned n, m;
     stringTokenizer strTok;
     string linea;

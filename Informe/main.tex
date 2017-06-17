@@ -1,0 +1,290 @@
+\documentclass[a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage} % Package to use full page
+\usepackage{parskip} % Package to tweak paragraph skipping
+\usepackage{tikz} % Package for drawing
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{eucal}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{float}
+\usepackage{forest}
+\usepackage{pgfplotstable}
+\usepackage{pgfplots}
+\usepackage[shortlabels]{enumitem}
+\usepackage{caratula}
+
+\algnewcommand{\IIf}[1]{\State\algorithmicif\ #1\ \algorithmicthen}
+\algnewcommand{\EndIIf}{\unskip\ \algorithmicend\ \algorithmicif}
+\algnewcommand{\LineComment}[1]{\State \(\triangleright\) #1}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\usepackage{titlesec}
+
+\setcounter{secnumdepth}{4}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\begin{document}
+\newpage
+
+\materia{Algoritmos y Estructuras de Datos III}
+\submateria{Primer cuatrimestre 2017}
+\titulo{TP Nº 2 - Grafos}
+\subtitulo{Camino Minimo, Arboles} % opcional
+\grupo{} % opcional
+\integrante{Javier Petri}{306/15}{javierpetri2012@gmail.com}
+\integrante{Jonathan Scherman}{152/15}{jonischerman@gmail.com}
+\integrante{Lucas Adriel Figarola}{953/13}{lukas12\_alfa56@hotmail.com}
+\integrante{Ruben Adrian Castiglione}{818/15}{adriancastiglione@gmail.com}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\tableofcontents
+
+%%\newpage
+%%\section{Muestra}
+%%\input{muestraAlgoritmoyGrafico}
+
+\newpage
+\section{Delivery Optimo}
+\input{problema1}
+
+\newpage
+\section{Subsidiando el transporte}
+\input{problema2}
+
+\newpage
+\section{Reconfiguracion de Rutas}
+\begin{subsection}{Representaci\'{o}n}
+Representaremos este problema con un grafo $G_i$ que cumpla lo siguiente:
+\begin{itemize}
+	\item{$G_i$ es un grafo simple: Dado que todas las rutas son doblemano, podemos abstraernos de las direcciones y pensarlos como si cada par de rutas fueran una \'{u}nica.}
+    \item{$V = \{v \in \mathbb{N}_0 : v < n \}$: Esto es, los v\'{e}rtices de $G_i$ ser\'{a}n n\'{u}meros, en donde cada uno de ellos representa cada una de las $n$ ciudades del problema.}
+    \item{$E = \{(v_1, v_2) \in V^2 : \text{$\exists$ ruta que une $v_1$ con $v_2$}  \}$: De esta forma, los ejes de $G_i$ representar\'{a}n las rutas existentes del problema.}
+    \item{$p:V^2 \rightarrow \mathbb{N}_0$: Representaremos como los precios de construcci\'{o}n o destrucci\'{o}n de las rutas como pesos en los ejes de $G_i$. Por lo cual, p asignar\'{a} un costo (mayor o igual a 0) a cada uno de los ejes. Observar que $E^c \subseteq dom(p)$ dado que esta funci\'{o}n tambi\'{e}n asigna costos a los ejes inexistentes de $G_i$. En definitiva, $p$ asigna precios de destrucci\'{o}n a rutas que existen y de construcci\'{o}n a aquellas que no.}
+
+\end{itemize}
+Entonces, $G_i$ ser\'{a} el modelo que representa a las ciudades con sus rutas y los precios de construcci\'{o}n o destrucci\'{o}n correspondientes.
+\end{subsection}
+
+\begin{subsection}{Resoluci\'{o}n}
+La idea del algoritmo que usaremos para resolver este problema ser\'{a} la siguiente:
+\begin{enumerate}
+	\item{Encontrar $c_1, c_2, ... , c_k$ componentes conexas de $G_i$. No sabemos si $G_i$ es conexo o no, pero sabemos que podemos tomar todas las componentes conexas $C_i$ y entonces, para cada par de ciudades $v_1, v_2 \in V(C_i)$ habr\'{a}, por lo menos, un camino para llegar de una a la otra.}
+    \item{Destru\'{i}r las rutas innecesarias con menor costo de destrucci\'{o}n. Esto lo haremos obteniendo los \'{a}rboles generadores m\'{a}ximos $A_i$ correspondientes a cada $C_i$, con $1 \leq i \leq k$. Podemos lograrlo invirtiendo el peso de los ejes y corriendo el algoritmo de $Kruskal$, dado que $codom(p) \geq 0 \Rightarrow$ los ejes son positivos (\'{o} 0). Llamemos $E_d$ a estas rutas destru\'{i}das, $P_d$ al costo total de destru\'{i}rlas.}
+    \item{Constru\'{i}r las rutas mas baratas entre cada par de componentes conexas. Para elegir que rutas deber\'{a}n ser constru\'{i}das, usaremos nuevamente el algoritmo de $Kruskal$, tomando $E^c$ como conjunto de ejes a agregar y $G_i$ como grafo base. Llamemos $E_c$ a estas nuevas rutas, $P_c$ al costo total de constru\'{i}rlas.}
+\end{enumerate}
+As\'{i}, si $G_f$ es el grafo resultante, entonces $V(G_f) = V(G_i)$, $E(G_f) = E(G_i) - E_d \cup E_c$. Entonces, el resultado ser\'{a} $E(G_f)$ y el costo total $P = P_c + P_d$
+\end{subsection}
+
+\begin{subsection}{Implementaci\'{o}n}
+Para la implementaci\'{o}n vamos a necesitar, en primer lugar, la estructura \textit{Disjoint Set} para trabajar con las componentes conexas. Adem\'{a}s, necesitaremos hacerle una serie de modificaciones:
+\begin{itemize}
+	\item{Para su estructura, necesitaremos saber cu\'{a}les son los ejes contenidos en cada componente conexa.}
+	\item{En la funci\'{o}n \textit{union}, adem\'{a}s de su funcionalidad tradicional, tendr\'{a} que unir los ejes de la componente con menor rank a la de mayor rank, que puede hacerse en $\Theta(1)$ puesto que  se representan con listas enlazadas. Adem\'{a}s, \textit{makeSet} tendr\'{a} que inicializar la lista de ejes vac\'{i}a correspondiente. Entonces, las complejidades de las funciones \textit{makeSet, union, find} de esta estructura no se ven alteradas con estas. modificaci\'{o}nes}
+    \item{ Se agrega la funci\'{o}n \textit{sets}, que devuelve la lista de componentes conexas distintas que contiene la estructura. Para ello, tendr\'{a} que recorrer todos los nodos y agregar (por referencia) las componentes conexas diferentes a las cuales estos pertenecen en una lista, cuyo costo ser\'{a} $\Theta$(n).}
+\end{itemize}
+De esta forma, para obtener las componentes conexas tendremos que, luego de inicializar las componentes conexas triviales usando \textit{makeSet} para cada v\'{e}rtice, recorrer todas las aristas y, para cada una de ellas, llamar a la funci\'{o}n \textit{unify} entre los extremos de la misma. As\'{i}, las obtenemos utilizando la funci\'{o}n \textit{sets}. \\ \\
+Por otro lado, se usa la funcion \textit{kruskal-AGMax} sobre cada componente conexa $C_i$, que toma $E(C_i)$ por referencia y genera un \'{a}rbol generador m\'{a}ximo, devolviendo una tupla con el peso de todos los ejes destru\'{i}dos y los ejes del \'{a}rbol generado. Para ello, se usar\'{a} el algoritmo de Kruskal pero invirtiendo los pesos de los ejes para realizar el ordenamiento inicial de ejes para que Kruskal ubique las aristas con mayor costo de destrucci\'{o}n al principio. Adem\'{a}s, ir\'{a} acumulando el peso de los ejes que se destruyen (o sea, aquellos ejes que Kruskal fue descartando). Por lo cual, estos cambios no alteran el objetivo del algoritmo y el costo temporal sumando junto al costo de invertir los ejes y crear una copia de ellos para devolver, que se resuelve en O(2m($C_i$)). Luego el total es O(m($C_i$)log(m($C_i$))+2m($C_i$)) = O(m($C_i$)log(m($C_i$)). \\ \\ 
+Por \'{u}ltimo, la funci\'{o}n \textit{kruskal-AGMin}, que toma una lista de ejes de entrada \textit{rutasResultantes}, que corresponde a $m' = \bigcup_{i=1}^{k} E(A_i)$ (todas las rutas restantes despu\'{e}s de la destrucci\'{o}n de rutas innecesarias), y las rutas que todavia no existen, ${{m^c}_G}_i$ , y set ejecuta el algoritmo de Kruskal tomando como ejes de inserci\'{o}n a \textit{rutasNoExistentes} y como grafo base a \textit{rutasResultantes}. Notar que en esta implementaci\'{o}n, ya tenemos una ciudad parcial con componentes no conectadas. Por lo cual, en lugar de constru\'{i}r el AGM entero (partiendo desde la lista \textit{vac\'{i}a}), comenzaremos tomando la lista $rutasResultantes$ de esas componentes y se agregar\'{a}n los ejes(rutas) con menor peso. Por lo cual, la idea del algoritmo es la misma, pero con la \'{u}nica diferencia de que se parte de una lista de aristas no vac\'{i}a, contrariamente al algoritmo tradicional. Por lo tanto, seguir\'{a} valiendo que esos ejes que se agreguen ser\'{a}n minimos y entonces nos ayuda para resolver el paso 3 (constru\'{i}r las rutas necesarias). Entonces, la complejidad para lograr esto permanece y sabemos que es O(${{{m^c}_G}_i}log({{{m^c}_G}_i})$)\\
+
+\textbf{Input:} \textit{n}: Cantidad de ciudades (int) \\ 
+\hphantom{Input:  } \textit{rutasExistentes}: Lista de ejes correspondientes a las rutas existentes \\
+\hphantom{Input:  } \textit{rutasNoExistentes}: Lista de ejes correspondientes a las rutas que no existen.\\
+Donde eje tiene tiene un origen, destino y peso.
+
+\begin{algorithm}[H]
+  \begin{algorithmic}[1]
+  
+    \Function{reconstruirRutas}{n, rutasExistentes, rutasNoExistentes}
+    \State 	uds $\gets$ DisjointSetVacio
+   
+     \For{i=0 to n - 1}\Comment{Inicializar vertices como C.C.}
+     	\State uds.makeSet(i) 
+     \EndFor
+     \For{\textbf{each} $e \in $ rutasExistentes} \Comment{Paso 1: Separar componentes conexas}
+     	\State uds.union(e)
+     \EndFor
+     \State rutasResultantes $\gets$ ListaVac\'{i}a
+     \State costoTotal $\gets$ 0
+     \State componentesConexas $\gets$ uds.sets() 
+     \For{\textbf{each} $C_i \in$ componentesConexas} \Comment{Paso 2: Destru\'{i}r rutas innecesarias} 
+		\State $<$costo, rutas$>$ $\gets$ kruskal-AGMax($C_i$.ejes())
+        \State rutasResultantes.unir(rutas)
+        \State costoTotal $\gets$ costoTotal + costo 
+      \EndFor
+      \State \Comment {Paso 3: Construir rutas nuevas}
+      \State $<$costo, rutas$>$ $\gets$ kruskal-AGMin(rutasResultantes, rutasNoExistentes) 
+      \State costoTotal $\gets$ costoTotal + costo
+      \State \textbf{return} $<$rutas, costoTotal$>$
+    \EndFunction    
+  \end{algorithmic}
+\end{algorithm}
+\end{subsection}
+
+\begin{subsection}{Complejidad}
+Para inicializar el \textit{Disjoint Set}, se puede ver que el ciclo itera siempre exactamente $n$ veces y ejecuta la operaci\'{o}n \textit{makeSet}, que como dijimos antes, su complejidad no se ve afectada por los cambios por lo que sabemos que su complejidad es O(1). Por lo cual, este ciclo toma $O(n)$ \\ \\
+Para el ciclo del paso 1, podemos pensar que en un peor caso las rutasExistentes van a ser todas las posibles, en cuyo caso el ciclo iterar\'{i}a O($m$) veces, ejecutando la operaci\'{o}n \textit{union} que, dado que la complejidad original permanece, toma O($\alpha(n)$) amortizado, en donde $\alpha$ es la inversa de la funci\'{o}n de \textit{Ackermann}. Luego, la complejidad del ciclo es $O(m\alpha(n))\subseteq O(\frac{n(n-1)}{2}\alpha(n))=O(n^2\alpha(n))$ 
+
+En la l\'{i}nea 11, como se mencion\'{o} anteriormente, tomar\'{a} $\Theta$(n). 
+
+Para el ciclo del paso 2, sabemos que se va a recorrer exactamente $k$ veces, donde $k$ es la cantidad de componentes conexas distintas que hay. Por cada una de ellas, se va a realizar \textit{kruskal-AGMax}, que toma O(m($C_i$)log(m($C_i$))). Adem\'{a}s tendr\'{a} que hacer un\'{i}on de listas que puede hacerse en O(1), y sumas y asignaciones que tambi\'{e}n son O(1). Entonces, lo que sabemos es que la complejidad temporal de este ciclo ser\'{a} $O(\sum\limits_{i=1}^k m(C_i)log(m(C_i)))$. Ahora, como $m(C_i) \leq m$, tenemos  \begin{align*}
+\sum\limits_{i=1}^k m(C_i)log(m(C_i)) \\ 
+\leq \sum\limits_{i=1}^k m(C_i)log(m) \\ 
+= log(m)\sum\limits_{i=1}^k m(C_i) \\
+= log(m)m \\
+\leq log(\frac{n(n-1)}{2})\frac{n(n-1)}{2} \\
+\leq log(n^2)n^2 \\
+= 2log(n)n^2
+\end{align*}
+Por lo cual, la complejidad temporal de este ciclo es $O(n^2log(n))$. \\ 
+
+Por \'{u}ltimo, vimos antes que la complejidad de la funci\'{o}n \textit{kruskal-AGMin} no cambia con respecto a la original. Por lo tanto, sabemos que esto tomar\'{a} $O(|\text{rutasResultantes}|)$ para armar el \textit{Disjoint set}, y $O(|\text{rutasNoExistentes}|log(|\text{rutasNoExistentes}|))$. Como rutasResultantes $\leq$ rutasExistentes y adem\'{a}s $|\text{rutasExistentes}|+|\text{rutasNoExistentes}|=m$, vale que $|\text{rutasResultantes}|, |\text{rutasNoExistentes}| \leq m$. Por lo que 
+\begin{align*}
+	|\text{rutasResultantes}| + |\text{rutasNoExistentes}|log(|\text{rutasNoExistentes}|) \\
+    \leq m + m log(m)
+\end{align*}
+Por lo cual, esto toma $O(m+mlog(m)) = O(m log (m)) \subseteq o(n^2log(n))$ (por lo visto en el caso anterior) \\ 
+
+Sumado a algunas otras operaciones O(1), la complejidad temporal final del algoritmo en un peor caso es $O(n\alpha(n)+n^2\alpha(n)+n+2n^2log(n)) = O(n^2log(n))$ en un peor caso, que cumple con la complejidad pedida. \\
+
+En cuanto a complejidad espacial, se necesitar\'{a} O(n+m) para el \textit{Disjoint Set} y O(m) para las listas de rutas existentes, no existentes y resultantes. Por lo cual, resulta $O(n+m) \subseteq O(n+\frac{n(n-1)}{2}) = O(n^2)$, 
+\end{subsection}
+
+\begin{subsection}{Correctitud}
+Sea $G_f$ el grafo resultante, ${P_G}_f$\footnote{Notar que $P$ corresponde a la inversi\'{o}n efectuada, que es diferente a la funci\'{o}n $p$ que asigna pesos} la inversi\'{o}n efectuada. Para probar la correctitud de este algoritmo con respecto a lo pedido, queremos ver que se verifican:
+\begin{enumerate}[label=(\roman*)]
+	\item{$G_f$ es un \'{a}rbol: Si esto se cumple, entonces por definici\'{o}n de \'{a}rbol,  $G_f$ es conexo y no tiene ciclos. Como es conexo, $\forall v1, v2 \in V(G_f), v1 $ y $ v2$ estan conectadas por alg\'{u}n camino, lo cual implica que todas las ciudades estan conectadas Adem\'{a}s, como no hay ciclos, este camino es \'{u}nico.}
+    \item{${P_G}_f$ es m\'{i}nimo.}
+\end{enumerate}
+
+\underline{dem}(i): Por correctitud de Kruskal, sabemos que el resultado de ejecutar dicho algoritmo sobre las componentes conexas $C_1, C_2, ..., C_k$ ser\'{a}n $k$ \'{a}rboles distintos $A_1, A_2, ... , A_k$ (paso 2). Por otro lado, sabemos que Kruskal solo agrega aristas que no generan ciclos, por lo que es imposible que despu\'{e}s de terminar el paso 3 haya alguno. Adem\'{a}s, en este paso se contemplan todas las aristas inexistentes por lo que tampoco puede pasar que alg\'{u}n par de componentes conexas de $G_i$ queden disconexas entre s\'{i}. Luego, $G_f$ es conexo y no tiene ciclos $\Rightarrow$ $G_f$ es un \'{a}rbol.
+
+\underline{dem}(ii): Supongamos que ${P_G}_f$ no es m\'{i}nimo. Entonces, $\exists G'_f$ \'{a}rbol tq ${P_{G'}}_f < {P_G}_f  $  ($\Rightarrow G'_f \neq G_f$). \\ 
+Veamos que:
+\begin{itemize}
+	\item{La destrucci\'{o}n de rutas de $G_f$ fue \'{o}ptima: \\ Sea $C_i$ una componente conexa de $G_i$. Si tomamos $A_i \subset G_f, A'_i \subset G'_f$ los subgrafos que corresponden a $C_i$ en estas soluciones (m\'{a}s precisamente, $A_i = G_f |_{V(C_i)}, A'_i = G'_f |_{V(C_i)}$\footnote{Restricci\'{o}n (abuso de notaci\'{o}n)}), por correctitud de Kruskal, sabemos que ${P_A}_i \leq {P_{A'}}_i$ (pues $A_i$ va a a destru\'{i}r las rutas m\'{a}s baratas). \\
+Pero esto vale para todas las componentes conexas de $G_i$, por lo tanto debe ser que
+\begin{align*}
+P_A \leq P_A'
+\end{align*}
+donde $A, A'$ son grafos tales que $A$ es la union de todos los $A_i$ y $A'$ es la union de todos los ${A'}_i$. }
+	\item{La construcci\'{o}n de rutas de $G_f$ fue \'{o}ptima: }
+    \begin{enumerate}[(a)]
+    	\item{Se construyeron las rutas necesarias m\'{a}s baratas: \\ 
+En primer lugar, notemos nunca va a ser necesario constru\'{i}r en una componente conexa pues si as\'{i} fuera se generar\'{i}a entonces un ciclo (en t\'{e}rminos del problema, se crear\'{i}an nuevos caminos y se aumentar\'{i}a el costo de la soluci\'{o}n). Por esto, solo tiene sentido constru\'{i}r rutas entre las componentes conexas del grafo inicial $G_i$. Para esto, podemos asegurar por correctitud de Kruskal, que se van a constru\'{i}r las rutas mas baratas entre todas las posibles y, adem\'{a}s, esta construcci\'{o}n nunca va a generar ciclos, es decir, nunca se construir\'{a}n rutas innecesarias para conectar estas componentes. Si consideramos los grafos $A^c = G_f - A, {A'}^c =  {{G'}_f} - A'$, tenemos que entonces vale 
+\begin{align*}
+P_{A^C} \leq P_{{A'}^C}
+\end{align*}
+        }
+        \item{No se construy\'{o} ninguna ruta innecesaria: \\ De nuevo, es imposible que pase que $A^c$ tenga alguna ruta innecesaria por correctitud de Kruskal.  Por otro lado, en $A$, no se construy\'{o} ninguna ruta nueva, solo se destruyeron las que eran innecesarias.  }
+        
+    \end{enumerate}
+\end{itemize}
+Finalmente, si sumamos ambas desigualdades, llegamos a que 
+\begin{align*}
+	P_A + P_{A^C} \leq P_{A'} + P_{{A'}^C} \\ 
+    \Leftrightarrow {P_G}_f \leq {P_{G'}}_f
+\end{align*}
+Lo cual es absurdo puesto que se contradice con la hip\'{o}tesis inicial. Debe ser entonces que $G_f$ sea la mejor soluci\'{o}n. $\square$
+
+\end{subsection}
+
+\begin{subsection}{Experimentaci\'{o}n}
+Para todos los experimentos, se tomaron, para cada $n$, el tiempo promedio que tardaron 5 instancias de $n$ elementos y luego se tomo el tiempo promedio para representarlo en el gr\'{a}fico. Adem\'{a}s, el costo de los tiempos es el producto de constru\'{i}r el grafo a partir de las listas de rutas existentes/inexistentes y ejecutar la l\'{o}gica de reconfiguraci\'{o}n de rutas en s\'{i}.
+
+
+En primer lugar, veamos como se comporta el algoritmo frente a grafos conexos o disconexos. Para ello, vamos a comparar los grafos 
+esparsos generados con $m=n$ (ya que es $O(n)$) y a los densos con $m= \frac{(n-1)^2}{2}$ (ya que es $O(n^2)$). Por cada tipo, queremos ver cuanto cambia en base a si son conexos o no. Los resultados son:\\
+
+\pgfplotstableread[col sep=comma]{tiempos-ej3.csv}{\table}
+\begin{tikzpicture}
+\begin{axis}[
+  only marks,
+  xlabel= $n$,
+  ylabel= $\text{Tiempo}(ns)$]
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y = ns_rutas_esparso_conexo, col sep=comma]{\table};
+\addlegendentry{G esparso conexo}
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y = ns_rutas_esparso_disconexo, col sep=comma]{\table};
+\addlegendentry{G esparso disconexo}
+`\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[
+  only marks,
+  xlabel= $n$,
+  ylabel= $\text{Tiempo} (ns)$]
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y = ns_rutas_denso_conexo, col sep=comma]{\table};
+\addlegendentry{G denso conexo}
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y = ns_rutas_denso_disconexo, col sep=comma]{\table};
+\addlegendentry{G denso disconexo}
+`\end{axis}
+\end{tikzpicture}
+
+Podemos notar que los tiempos de ejecuci\'{o}n son relativamente parecidos para grafos conexos o disconexos. \\ \\
+En el pr\'{o}ximo experimento, veamos como se comportan los tiempos de ejecuci\'{o}n entre los grafos esparsos, densos, vac\'{i}os y completos. Los primeros no son necesariamente conexos (de todas formas vimos en el primer experimento que se comportan de forma similar en t\'{e}rminos de tiempo).
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  only marks,
+  xlabel= $n$,
+  ylabel=  $\text{Tiempo} (ns)$]
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y = ns_rutas_vacias, col sep=comma]{\table};
+\addlegendentry{G vac\'{i}o}
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y = ns_rutas_completas, col sep=comma]{\table};
+\addlegendentry{G completo}
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y = ns_rutas_denso_disconexo, col sep=comma]{\table};
+\addlegendentry{G denso}
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y = ns_rutas_esparso_disconexo, col sep=comma]{\table};
+\addlegendentry{G esparso}
+`\end{axis}
+\end{tikzpicture}
+\end{figure}
+
+Lo que podemos notar es que en todos los casos, nuevamente, el tiempo tomado en cada caso es similar. Esto puede entenderse porque el algoritmo trabaja con las rutas ($E$) y las rutas no existentes ($E^c$). Cuanto m\'{a}s tiempo tome el trabajo en alguno de estos conjuntos menos tiempo tomar\'{a} en su complemento. En particular, para un grafo esparso su complemento es denso, por lo que en ese caso, el costo de destru\'{i}r rutas va a ser menor que el costo de constru\'{i}r las nuevas. Equivalentemente vale la inversa y, adem\'{a}s, esto aplica para los grafos vac\'{i}os y completos, puesto que estos son los grafos mas esparsos y densos respectivamente. \\ \\
+Otra observaci\'{o}n es que, mirandolo con un poco de detalle, se puede ver que los grafos completos y densos tardan menos que los vac\'{i}os y esparsos. Esto es por los costos de trabajar con las diferentes componentes conexas. Cuantas m\'{a}s componentes conexas hayan,  m\'{a}s aumenta la cantidad de operaciones que se realizan (se realizan mas copias de ejes, por ejemplo) \\ \\ 
+En el pr\'{o}ximo experimento, se pretende ver que la complejidad te\'{o}rica calculada se condice con los tiempos a medida que $n$ crece. Para ello, tomamos el cociente entre el tiempo de ejecuci\'{o}n y la complejidad te\'{o}rica. Los resultados fueron los siguientes:
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  only marks,
+  xlabel= $n$,
+  ylabel=  $\frac{\text{Tiempo}}{n^2 log(n)}$ (ns), 
+  ymax = 2*(10^4)]
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y expr = {\thisrow{ns_rutas_vacias}/(\thisrow{cant_ejes}^2)*log2(\thisrow{cant_ejes})} , col sep=comma]{\table};
+\addlegendentry{G vac\'{i}o}
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y expr = {\thisrow{ns_rutas_completas}/(\thisrow{cant_ejes}^2)*log2(\thisrow{cant_ejes})}, col sep=comma]{\table};
+\addlegendentry{G completo}
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y expr = {\thisrow{ns_rutas_denso_disconexo}/(\thisrow{cant_ejes}^2)*log2(\thisrow{cant_ejes})}, col sep=comma]{\table};
+\addlegendentry{G denso}
+\addplot+[thin,mark size=1pt] table[x = cant_ejes, y expr = {\thisrow{ns_rutas_esparso_disconexo}/(\thisrow{cant_ejes}^2)*log2(\thisrow{cant_ejes})}, col sep=comma]{\table};
+\addlegendentry{G esparso}
+`\end{axis}
+\end{tikzpicture}
+\end{figure}
+
+Sorpresivamente, no se puede asegurar a simple vista que los tiempos tiendan a una constante como esper\'{a}bamos. Parecer\'{i}a ser que los tiempos crecen logar\'{i}tmicamente m\'{a}s r\'{a}pido que la complejidad te\'{o}rica calculada. 
+
+
+
+\end{subsection}
+\input{problema3}
+
+\end{document}
