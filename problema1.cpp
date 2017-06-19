@@ -180,8 +180,10 @@ int main(int argc, char** argv){
 
 			//Representación: distancia negativa es ruta premium, distancia positiva es ruta normal. 
 			//Es un grafo normal, por lo tanto la matriz es simétrica.
-			grafo.agregarVecino(c1-1, make_pair(c2-1, d*pow(-1, p))); 
-			grafo.agregarVecino(c2-1, make_pair(c1-1, d*pow(-1, p))); 
+			int dist = d;
+			if(p == 1) dist = d*(-1);
+			grafo.agregarVecino(c1-1, make_pair(c2-1, dist)); 
+			grafo.agregarVecino(c2-1, make_pair(c1-1, dist)); 
 		}
 
 		cout << resolver(grafo, n, origen, destino, k) << endl; //En el grafo las ciudades se indexaron en el rango [0, n)
