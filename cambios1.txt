@@ -1,0 +1,10 @@
+Cambios en Delivery Optimo:
+
+Ampliada la introducción al problema.
+Cambio la representación del grafo de entrada y del digrafo de soluciones. Cambios reflejado en el informe y en el código.
+Cambio en el código del algoritmo.
+Calculados los nodos y las aristas del digrafo. Recalculadas las complejidades en consecuencia.
+Agregada la demostración de correctitud.
+Mejoradas las explicaciones y ampliadas las experimentaciones de complejidad.
+Agregadas experimentaciones sobre casos buenos y malos.
+
