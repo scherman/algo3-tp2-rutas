@@ -1,0 +1,6 @@
+2. Subsidiando el tránsito
+En la versión anterior, el algoritmo no funcionaba correctamente en grafos disconexos. En esta nueva versión, se actualizó el algoritmo y junto a eso, las categorías. El informe se rehizo casi en su totalidad desde cero, en donde se explicó con más detalle cada parte que teníamos de la entrega anterior y los cambios nuevos correspondientes. Además, se agregó la correctitud del algoritmo y la experimentación faltante de la primera entrega.
+
+3.  Reconfiguración de rutas
+Se corrigieron algunos detalles en la explicación de la sección "complejidad". Además, se rehizo la demostración de correctitud y cambió la explicacion de las experimentaciones. 
+
